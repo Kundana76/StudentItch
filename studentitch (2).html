@@ -1,0 +1,1864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>StudentItch — Every Startup Begins With One Problem.</title>
+<meta name="description" content="StudentItch is an AI-curated bank of real-world engineering problem statements, explored through a cinematic 3D Idea Core — scoped, scored, and ready to build." />
+<meta name="theme-color" content="#05050A" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script type="importmap">
+{ "imports": {
+  "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/",
+  "lenis": "https://unpkg.com/lenis@1.3.23/dist/lenis.mjs"
+} }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<style>
+/* ============ RESET & BASE ============ */
+*{ box-sizing:border-box; margin:0; padding:0; }
+html{ font-size:16px; -webkit-font-smoothing:antialiased; scroll-behavior:auto; }
+body{
+  background:#05050A; color:#F5F5F7; font-family:'Inter',sans-serif;
+  overflow-x:hidden; line-height:1.5;
+}
+a{ color:inherit; text-decoration:none; }
+button{ font:inherit; color:inherit; background:none; border:none; cursor:pointer; }
+ul{ list-style:none; }
+img{ display:block; max-width:100%; }
+input, textarea{ font:inherit; color:inherit; }
+.sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+:focus-visible{ outline:2px solid #00E5FF; outline-offset:2px; }
+::selection{ background:#6E5BFF; color:#fff; }
+
+/* ============ TOKENS ============ */
+:root{
+  --bg-primary:#05050A;
+  --bg-secondary:#0B0B12;
+  --accent-primary:#6E5BFF;
+  --accent-secondary:#00E5FF;
+  --text-primary:#F5F5F7;
+  --text-secondary:#A0A0AC;
+  --text-tertiary:#5C5C68;
+  --glass-border:rgba(255,255,255,0.08);
+  --glass-fill:rgba(255,255,255,0.04);
+  --glass-fill-strong:rgba(255,255,255,0.07);
+  --radius-lg:1.75rem;
+  --radius-md:1.125rem;
+  --radius-sm:0.7rem;
+  --shell:78rem;
+  --font-display:'Space Grotesk',sans-serif;
+  --font-body:'Inter',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  --ease-spring:cubic-bezier(.22,1,.36,1);
+}
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important; }
+}
+
+.shell{ max-width:var(--shell); margin-inline:auto; padding-inline:1.25rem; }
+@media (min-width:640px){ .shell{ padding-inline:2rem; } }
+
+/* ============ SKIP LINK ============ */
+.skip-link{
+  position:fixed; left:1rem; top:-4rem; z-index:300;
+  background:#0a0a14; color:#fff; padding:.65rem 1.1rem; border-radius:.75rem;
+  font-size:.875rem; transition:top .25s var(--ease-out);
+  border:1px solid var(--glass-border);
+}
+.skip-link:focus{ top:1rem; }
+
+/* ============ CURSOR (desktop only) ============ */
+.cursor-dot{
+  position:fixed; width:10px; height:10px; border-radius:50%;
+  background:var(--accent-secondary); pointer-events:none; z-index:999;
+  transform:translate(-50%,-50%); transition:width .25s var(--ease-out), height .25s var(--ease-out), background .25s;
+  mix-blend-mode:difference; display:none;
+}
+@media (hover:hover) and (pointer:fine){ .cursor-dot{ display:block; } }
+.cursor-dot.big{ width:34px; height:34px; background:var(--accent-primary); }
+.cursor-dot.over-3d{ width:48px; height:48px; background:transparent; border:1.5px solid var(--accent-secondary); box-shadow:0 0 20px var(--accent-secondary); }
+.cursor-trail-dot{
+  position:fixed; top:0; left:0; width:5px; height:5px; border-radius:50%;
+  background:var(--accent-secondary); pointer-events:none; z-index:998; opacity:.55;
+  transform:translate(-50%,-50%); will-change:transform,opacity;
+}
+.cursor-shock{
+  position:fixed; top:0; left:0; width:10px; height:10px; border-radius:50%;
+  border:1.5px solid var(--accent-secondary); pointer-events:none; z-index:997;
+  transform:translate(-50%,-50%); animation:shockwave .6s var(--ease-out) forwards;
+}
+@keyframes shockwave{ to{ width:70px; height:70px; opacity:0; border-color:var(--accent-primary); } }
+
+/* ============ AMBIENT STARFIELD (global, behind everything) ============ */
+#starfield{ position:fixed; inset:0; z-index:-1; width:100%; height:100%; opacity:.7; }
+
+/* ============ LOADER (AI Vault) ============ */
+#loader{
+  position:fixed; inset:0; z-index:400; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:1.75rem; background:#05050A; overflow:hidden;
+  transition:transform .8s var(--ease-spring), opacity .8s var(--ease-spring);
+}
+#loader.exit{ transform:translateY(-100%); opacity:0; pointer-events:none; }
+.vault-doors{ position:absolute; inset:0; z-index:2; display:flex; pointer-events:none; }
+.vault-door{ flex:1; background:linear-gradient(160deg,#0c0c16,#05050a); position:relative; transition:transform 1s var(--ease-spring); box-shadow:0 0 60px rgba(0,0,0,.6) inset; }
+.vault-door.left{ transform:translateX(0); border-right:1px solid rgba(0,229,255,.25); }
+.vault-door.right{ transform:translateX(0); border-left:1px solid rgba(0,229,255,.25); }
+#loader.doors-open .vault-door.left{ transform:translateX(-100%); }
+#loader.doors-open .vault-door.right{ transform:translateX(100%); }
+.vault-door::before{
+  content:''; position:absolute; top:0; bottom:0; width:1px; background:linear-gradient(var(--accent-secondary),transparent 60%);
+  opacity:.4; animation:vaultLines 3s linear infinite;
+}
+.vault-door.left::before{ right:2rem; }
+.vault-door.right::before{ left:2rem; }
+@keyframes vaultLines{ 0%{ transform:translateY(-100%); } 100%{ transform:translateY(100%); } }
+.vault-scanline{
+  position:absolute; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--accent-secondary),transparent);
+  box-shadow:0 0 16px var(--accent-secondary); z-index:3; animation:vaultScan 1.6s ease-in-out infinite;
+}
+@keyframes vaultScan{ 0%,100%{ top:20%; opacity:.3; } 50%{ top:80%; opacity:1; } }
+.loader-brand{ position:relative; z-index:5; display:flex; align-items:center; gap:.6rem; font-family:var(--font-display); font-weight:600; font-size:1.5rem; }
+.loader-brand svg{ color:var(--accent-secondary); width:1.6rem; height:1.6rem; }
+.loader-sub{ position:relative; z-index:5; max-width:28ch; text-align:center; font-size:.85rem; color:var(--text-secondary); }
+.loader-status{ position:relative; z-index:5; font-family:var(--font-mono); font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--accent-secondary); min-height:1em; }
+.loader-bar-wrap{ position:relative; z-index:5; width:min(20rem,72vw); display:flex; flex-direction:column; gap:.6rem; }
+.loader-track{ height:2px; width:100%; background:rgba(255,255,255,.1); border-radius:2px; overflow:hidden; }
+.loader-fill{ height:100%; width:0%; background:linear-gradient(90deg,var(--accent-primary),var(--accent-secondary)); transition:width .1s linear; }
+.loader-meta{ position:relative; z-index:5; display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:.7rem; text-transform:uppercase; letter-spacing:.08em; color:var(--text-tertiary); width:min(20rem,72vw); }
+.loader-meta b{ color:var(--text-secondary); font-weight:500; }
+
+/* ============ BACKGROUND 3D CANVAS ============ */
+#seed-canvas{
+  position:fixed; inset:0; z-index:0; width:100%; height:100%;
+  transition:opacity .6s ease;
+}
+.idea-core-label{
+  position:absolute; left:50%; bottom:2.5rem; transform:translateX(-50%); z-index:1;
+  font-family:var(--font-mono); font-size:.68rem; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--text-tertiary); display:flex; align-items:center; gap:.5rem; pointer-events:none;
+}
+.idea-core-label i{ width:.4rem; height:.4rem; border-radius:999px; background:var(--accent-secondary); box-shadow:0 0 10px var(--accent-secondary); animation:pulseDot 1.8s ease-in-out infinite; }
+@keyframes pulseDot{ 0%,100%{ opacity:.4; } 50%{ opacity:1; } }
+
+/* ============ CATEGORY PLANETS ============ */
+.planets-wrap{ display:flex; flex-wrap:wrap; gap:1rem; justify-content:center; }
+.planet-btn{
+  position:relative; display:flex; flex-direction:column; align-items:center; gap:.6rem;
+  padding:.4rem; border-radius:1.25rem; transition:transform .35s var(--ease-out);
+}
+.planet-btn:hover{ transform:translateY(-6px); }
+.planet-orb{
+  width:3.4rem; height:3.4rem; border-radius:50%; position:relative;
+  background:radial-gradient(circle at 32% 28%, var(--pc,#6E5BFF) 0%, rgba(255,255,255,.06) 70%);
+  border:1px solid rgba(255,255,255,.12); box-shadow:0 0 0 rgba(0,0,0,0);
+  transition:box-shadow .35s var(--ease-out), transform .6s var(--ease-out);
+  animation:planetBob 5s ease-in-out infinite;
+  animation-delay:var(--pd,0s);
+}
+.planet-btn:hover .planet-orb{ box-shadow:0 0 26px -2px var(--pc,#6E5BFF), 0 0 60px -10px var(--pc,#6E5BFF); transform:scale(1.12) rotate(8deg); }
+@keyframes planetBob{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-5px); } }
+.planet-btn span{ font-size:.68rem; color:var(--text-secondary); white-space:nowrap; }
+.planet-btn.active .planet-orb{ box-shadow:0 0 30px -2px var(--pc,#6E5BFF); }
+.planet-btn.active span{ color:#fff; }
+
+/* ============ AI ORB SEARCH ============ */
+.search-orb-row{ display:flex; align-items:center; gap:.7rem; }
+.search-orb{
+  flex-shrink:0; width:1.9rem; height:1.9rem; border-radius:50%; position:relative;
+  background:radial-gradient(circle at 35% 30%, var(--accent-secondary), var(--accent-primary) 75%);
+  box-shadow:0 0 12px -1px var(--accent-secondary);
+}
+.search-orb::after{
+  content:''; position:absolute; inset:-4px; border-radius:50%; border:1px solid var(--accent-secondary);
+  opacity:0; transition:opacity .3s;
+}
+.search-orb-row.pulsing .search-orb::after{ opacity:.7; animation:orbPulse .5s ease-out; }
+@keyframes orbPulse{ from{ transform:scale(1); opacity:.8; } to{ transform:scale(1.7); opacity:0; } }
+
+/* ============ PROBLEM CARD 3D + GLOW ============ */
+.problem-card{ transform-style:preserve-3d; will-change:transform; }
+.problem-card .card-orbit-dot{
+  position:absolute; top:.9rem; right:.9rem; width:.4rem; height:.4rem; border-radius:999px;
+  background:var(--dot-color,var(--accent-secondary)); box-shadow:0 0 8px var(--dot-color,var(--accent-secondary));
+  animation:pulseDot 2.4s ease-in-out infinite;
+}
+.problem-card::before{
+  content:''; position:absolute; inset:0; border-radius:inherit; opacity:0; pointer-events:none;
+  background:radial-gradient(120px circle at var(--mx,50%) var(--my,50%), rgba(255,255,255,.08), transparent 70%);
+  transition:opacity .3s;
+}
+.problem-card:hover::before{ opacity:1; }
+.problem-card.fade-out{ opacity:0 !important; transform:scale(.92) !important; }
+.deck-card{ transform-style:preserve-3d; }
+
+/* ============ STAT RINGS ============ */
+.stat-ring-item{ display:flex; flex-direction:column; align-items:center; gap:.9rem; text-align:center; }
+.stat-ring-svg{ transform:rotate(-90deg); }
+.stat-ring-track{ fill:none; stroke:rgba(255,255,255,.08); stroke-width:6; }
+.stat-ring-value-arc{ fill:none; stroke:url(#ringGrad); stroke-width:6; stroke-linecap:round; stroke-dasharray:301.6; stroke-dashoffset:301.6; transition:stroke-dashoffset 1.4s cubic-bezier(.16,1,.3,1); }
+.stat-ring-wrap{ position:relative; width:7rem; height:7rem; }
+.stat-ring-num{ position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:var(--font-display); font-weight:700; font-size:1.4rem; }
+
+/* ============ MODAL SCAN ============ */
+.modal-panel{ position:relative; }
+.modal-scanline{
+  position:absolute; left:0; right:0; top:0; height:2px; z-index:5; border-radius:999px;
+  background:linear-gradient(90deg,transparent,var(--accent-secondary),transparent);
+  box-shadow:0 0 14px var(--accent-secondary); opacity:0;
+}
+.modal-panel.scanning .modal-scanline{ opacity:1; animation:modalScan .7s ease-out forwards; }
+@keyframes modalScan{ from{ top:0; } to{ top:100%; } }
+.modal-panel .stagger-el{ opacity:0; transform:translateY(10px); transition:opacity .5s var(--ease-out), transform .5s var(--ease-out); }
+.modal-panel.revealed .stagger-el{ opacity:1; transform:translateY(0); }
+
+/* ============ AI CORE BRIEF LOADER ============ */
+.ai-core-loading{ display:flex; flex-direction:column; align-items:center; gap:1rem; padding:1.5rem 0; }
+.ai-core-rings{ position:relative; width:4rem; height:4rem; }
+.ai-core-rings span{
+  position:absolute; inset:0; border-radius:50%; border:1.5px solid var(--accent-secondary); opacity:0;
+  animation:coreRing 1.6s ease-out infinite;
+}
+.ai-core-rings span:nth-child(2){ animation-delay:.4s; }
+.ai-core-rings span:nth-child(3){ animation-delay:.8s; }
+@keyframes coreRing{ 0%{ transform:scale(.3); opacity:.9; } 100%{ transform:scale(1.6); opacity:0; } }
+.ai-core-loading b{ font-family:var(--font-mono); font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--text-secondary); }
+
+/* ============ FINAL SCENE ============ */
+.final-scene{ text-align:center; padding-block:6rem 3rem; position:relative; }
+.final-scene .fs-tagline{
+  font-family:var(--font-display); font-weight:700; font-size:clamp(1.6rem,4.5vw,2.8rem);
+  letter-spacing:-.02em; max-width:20ch; margin-inline:auto; line-height:1.15;
+}
+.final-scene .fs-tagline .grad{ background:linear-gradient(120deg,var(--accent-secondary),var(--accent-primary)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.final-scene .pill-btn{ margin-top:2rem; }
+
+/* ============ BOT ORB / VOICE WAVE ============ */
+#itchbot-launcher{ position:fixed; }
+#itchbot-launcher .orb-ring{
+  position:absolute; inset:-6px; border-radius:999px; border:1px solid var(--accent-secondary); opacity:.6;
+  animation:coreRing 2.2s ease-out infinite;
+}
+.bot-voice-wave{ display:flex; align-items:center; gap:.2rem; height:1rem; }
+.bot-voice-wave i{ width:3px; border-radius:2px; background:var(--accent-secondary); animation:voiceBar .9s ease-in-out infinite; }
+.bot-voice-wave i:nth-child(1){ height:.4rem; animation-delay:0s; }
+.bot-voice-wave i:nth-child(2){ height:1rem; animation-delay:.15s; }
+.bot-voice-wave i:nth-child(3){ height:.6rem; animation-delay:.3s; }
+.bot-voice-wave i:nth-child(4){ height:.9rem; animation-delay:.45s; }
+@keyframes voiceBar{ 0%,100%{ transform:scaleY(.4); } 50%{ transform:scaleY(1); } }
+
+/* ============ HEADER ============ */
+header.site-header{
+  position:fixed; inset-inline:0; top:0; z-index:80;
+  opacity:0; transform:translateY(-14px);
+  transition:opacity .7s var(--ease-out), transform .7s var(--ease-out);
+}
+body.loaded header.site-header{ opacity:1; transform:translateY(0); transition-delay:.15s; }
+.header-inner{
+  display:flex; align-items:center; justify-content:space-between; gap:1.5rem;
+  padding-block:1.1rem; margin-top:.75rem;
+}
+.brand{ display:flex; align-items:center; gap:.55rem; font-family:var(--font-display); font-weight:600; font-size:1.15rem; letter-spacing:-.01em; }
+.brand svg{ width:1.3rem; height:1.3rem; color:var(--accent-secondary); }
+nav.primary-nav{ display:none; gap:1.75rem; font-size:.875rem; font-weight:500; color:var(--text-secondary); }
+nav.primary-nav a{ transition:color .25s, transform .25s; display:inline-block; }
+nav.primary-nav a:hover{ color:#fff; transform:translateY(-2px); }
+@media (min-width:1024px){ nav.primary-nav{ display:flex; } }
+.header-actions{ display:flex; align-items:center; gap:.6rem; }
+.pill-btn{
+  display:inline-flex; align-items:center; gap:.6rem; border-radius:999px;
+  font-size:.8rem; font-weight:500; white-space:nowrap;
+  transition:transform .3s var(--ease-out), background .25s, border-color .25s, box-shadow .3s;
+}
+.pill-btn:hover{ transform:scale(1.04); }
+.pill-btn.dark{ background:#fff; color:#0a0a14; padding:.65rem 1.3rem; }
+.pill-btn.ghost{ border:1px solid var(--glass-border); background:var(--glass-fill); color:var(--text-primary); padding:.6rem 1.2rem; backdrop-filter:blur(10px); }
+.pill-btn.ghost:hover{ border-color:rgba(255,255,255,.25); }
+.pill-btn.accent{ background:linear-gradient(120deg,var(--accent-primary),#9d8dff); color:#fff; padding:.65rem 1.3rem; box-shadow:0 0 0 rgba(110,91,255,0); }
+.pill-btn.accent:hover{ box-shadow:0 8px 30px -6px rgba(110,91,255,.6); }
+.menu-btn{ display:flex; }
+@media (min-width:1024px){ .menu-btn{ display:none; } }
+
+/* ============ HERO ============ */
+main{ position:relative; z-index:5; }
+#home{
+  position:relative; min-height:100vh; display:flex; align-items:center;
+  padding-top:6rem; padding-bottom:3rem; isolation:isolate;
+}
+.hero-grid{ display:grid; gap:2.5rem; width:100%; }
+@media (min-width:1024px){ .hero-grid{ grid-template-columns:1.15fr .85fr; align-items:center; gap:3rem; } }
+.eyebrow{
+  display:inline-flex; align-items:center; gap:.55rem; font-family:var(--font-mono);
+  font-size:.75rem; letter-spacing:.09em; text-transform:uppercase; color:var(--text-secondary);
+}
+.eyebrow .dot{ width:.4rem; height:.4rem; border-radius:999px; background:var(--accent-secondary); box-shadow:0 0 12px var(--accent-secondary); }
+.hero-h1{
+  font-family:var(--font-display); font-weight:700; letter-spacing:-.02em; line-height:.98;
+  font-size:clamp(2.4rem,7vw,4.6rem); margin-top:1.1rem; max-width:16ch;
+}
+.hero-h1 .grad{ background:linear-gradient(120deg,var(--accent-secondary),var(--accent-primary)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.hero-sub{ margin-top:1.4rem; max-width:46ch; font-size:1.05rem; color:var(--text-secondary); }
+.hero-ctas{ display:flex; flex-wrap:wrap; gap:.85rem; margin-top:2rem; }
+.hero-stats{ display:flex; flex-wrap:wrap; gap:1.75rem; margin-top:3rem; padding-top:1.75rem; border-top:1px solid var(--glass-border); }
+.hero-stat{ display:flex; flex-direction:column; gap:.2rem; }
+.hero-stat b{ font-family:var(--font-display); font-size:1.7rem; font-weight:600; }
+.hero-stat span{ font-size:.75rem; color:var(--text-tertiary); text-transform:uppercase; letter-spacing:.05em; }
+
+.hero-card-col{ display:flex; flex-direction:column; gap:1.25rem; }
+.glass-card{
+  border-radius:var(--radius-md); background:var(--glass-fill); border:1px solid var(--glass-border);
+  backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+}
+.itch-preview{ padding:1.4rem; display:flex; flex-direction:column; gap:1rem; }
+.itch-preview-top{ display:flex; align-items:center; justify-content:space-between; }
+.itch-preview-top .tag{ font-family:var(--font-mono); font-size:.7rem; letter-spacing:.05em; text-transform:uppercase; color:var(--text-tertiary); }
+.itch-preview-title{ font-family:var(--font-display); font-size:1.15rem; font-weight:600; letter-spacing:-.01em; min-height:3.4rem; }
+.itch-preview-meta{ display:flex; flex-wrap:wrap; gap:.5rem; }
+.chip{
+  display:inline-flex; align-items:center; gap:.35rem; font-size:.72rem; font-weight:500;
+  padding:.35rem .7rem; border-radius:999px; border:1px solid var(--glass-border); color:var(--text-secondary);
+}
+.build-score{
+  display:inline-flex; align-items:center; gap:.4rem; font-family:var(--font-mono); font-weight:600; font-size:.8rem;
+  padding:.35rem .7rem; border-radius:999px;
+}
+.build-score.high{ background:rgba(69,224,168,.14); color:#5EEBBB; }
+.build-score.mid{ background:rgba(255,201,77,.14); color:#FFD166; }
+.build-score.low{ background:rgba(255,107,107,.14); color:#FF8A8A; }
+
+/* category strip */
+.cat-strip-wrap{ position:relative; padding-block:2.5rem; border-top:1px solid var(--glass-border); border-bottom:1px solid var(--glass-border); overflow:hidden; }
+.cat-strip{ display:flex; gap:.75rem; width:max-content; animation:scrollcats 38s linear infinite; }
+@media (prefers-reduced-motion:reduce){ .cat-strip{ animation:none; } }
+@keyframes scrollcats{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+.cat-chip{
+  display:inline-flex; align-items:center; gap:.5rem; padding:.55rem 1rem; border-radius:999px;
+  border:1px solid var(--glass-border); background:var(--glass-fill); font-size:.82rem; white-space:nowrap;
+}
+.cat-chip i{ width:.5rem; height:.5rem; border-radius:999px; display:inline-block; }
+
+/* ============ SECTION SHARED ============ */
+section{ position:relative; padding-block:5rem; }
+.section-head{ max-width:42rem; margin-bottom:2.75rem; }
+.section-h2{ font-family:var(--font-display); font-size:clamp(1.9rem,4vw,2.75rem); font-weight:600; letter-spacing:-.02em; margin-top:.85rem; }
+.section-p{ margin-top:.9rem; color:var(--text-secondary); font-size:1rem; max-width:38ch; }
+
+.reveal{ opacity:0; transform:translateY(28px); transition:opacity .8s var(--ease-out), transform .8s var(--ease-out); }
+.reveal.in-view{ opacity:1; transform:translateY(0); }
+
+/* ============ TOP DECK ============ */
+.deck-layout{ display:grid; gap:2.5rem; align-items:center; }
+@media (min-width:1024px){ .deck-layout{ grid-template-columns:1fr 1fr; } }
+.deck-stage{ position:relative; height:26rem; display:flex; align-items:center; justify-content:center; }
+.deck-card{
+  position:absolute; width:100%; max-width:21rem; height:24rem; border-radius:var(--radius-lg);
+  padding:1.75rem; display:flex; flex-direction:column; justify-content:space-between;
+  background:linear-gradient(160deg,#12121c,#0a0a12); border:1px solid var(--glass-border);
+  box-shadow:0 30px 60px -20px rgba(0,0,0,.6);
+  cursor:grab; touch-action:pan-y; will-change:transform;
+}
+.deck-card:active{ cursor:grabbing; }
+.deck-card .rank{ font-family:var(--font-mono); font-size:.72rem; letter-spacing:.06em; color:var(--text-tertiary); text-transform:uppercase; }
+.deck-card h3{ font-family:var(--font-display); font-size:1.4rem; font-weight:600; letter-spacing:-.01em; margin-top:.9rem; line-height:1.25; }
+.deck-card p{ margin-top:.75rem; font-size:.88rem; color:var(--text-secondary); }
+.deck-card .deck-footer{ display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; }
+.deck-flag{
+  position:absolute; top:1.5rem; font-family:var(--font-display); font-weight:700; font-size:1.3rem;
+  padding:.3rem .8rem; border-radius:.5rem; border:2px solid; opacity:0; transform:rotate(-12deg);
+}
+.deck-flag.skip{ left:1.5rem; color:#FF6B6B; border-color:#FF6B6B; }
+.deck-flag.save{ right:1.5rem; color:#45E0A8; border-color:#45E0A8; transform:rotate(12deg); }
+.deck-controls{ display:flex; justify-content:center; gap:1rem; margin-top:1.5rem; }
+.deck-round-btn{
+  width:3.2rem; height:3.2rem; border-radius:999px; display:grid; place-items:center;
+  background:var(--glass-fill); border:1px solid var(--glass-border); transition:transform .3s var(--ease-out), background .25s;
+}
+.deck-round-btn:hover{ transform:scale(1.08); background:var(--glass-fill-strong); }
+.deck-round-btn.skip:hover{ color:#FF6B6B; }
+.deck-round-btn.save:hover{ color:#45E0A8; }
+.deck-empty{ text-align:center; color:var(--text-secondary); font-size:.95rem; }
+
+/* ============ BROWSE ============ */
+.browse-layout{ display:grid; gap:2rem; }
+@media (min-width:1024px){ .browse-layout{ grid-template-columns:16.5rem 1fr; align-items:start; } }
+.filter-panel{
+  border-radius:var(--radius-md); border:1px solid var(--glass-border); background:var(--glass-fill);
+  padding:1.4rem; display:flex; flex-direction:column; gap:1.5rem; position:sticky; top:6rem;
+  backdrop-filter:blur(16px);
+}
+.filter-group label.group-label{ display:block; font-family:var(--font-mono); font-size:.7rem; text-transform:uppercase; letter-spacing:.07em; color:var(--text-tertiary); margin-bottom:.7rem; }
+.search-input{
+  width:100%; background:rgba(255,255,255,.04); border:1px solid var(--glass-border); border-radius:.75rem;
+  padding:.65rem .9rem; font-size:.85rem; color:#fff; outline:none; transition:border-color .25s, background .25s;
+}
+.search-input::placeholder{ color:var(--text-tertiary); }
+.search-input:focus{ border-color:var(--accent-secondary); background:rgba(255,255,255,.06); }
+.chip-toggle-row{ display:flex; flex-wrap:wrap; gap:.45rem; }
+.chip-toggle{
+  font-size:.75rem; padding:.4rem .75rem; border-radius:999px; border:1px solid var(--glass-border);
+  color:var(--text-secondary); transition:all .2s;
+}
+.chip-toggle[aria-pressed="true"]{ background:var(--accent-primary); border-color:var(--accent-primary); color:#fff; }
+input[type="range"]{ width:100%; accent-color:var(--accent-secondary); }
+.range-value{ font-family:var(--font-mono); font-size:.78rem; color:var(--text-secondary); margin-top:.4rem; }
+.reset-filters{ font-size:.78rem; color:var(--text-tertiary); text-decoration:underline; text-underline-offset:3px; align-self:flex-start; }
+.reset-filters:hover{ color:#fff; }
+
+.browse-toolbar{ display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:1rem; margin-bottom:1.5rem; }
+.result-count{ font-size:.85rem; color:var(--text-secondary); }
+.sort-select{
+  background:rgba(255,255,255,.04); border:1px solid var(--glass-border); border-radius:.7rem;
+  padding:.5rem .8rem; font-size:.8rem; color:#fff;
+}
+.problem-grid{ display:grid; grid-template-columns:1fr; gap:1.1rem; }
+@media (min-width:640px){ .problem-grid{ grid-template-columns:1fr 1fr; } }
+@media (min-width:1280px){ .problem-grid{ grid-template-columns:1fr 1fr 1fr; } }
+
+.problem-card{
+  border-radius:var(--radius-md); border:1px solid var(--glass-border); background:var(--glass-fill);
+  padding:1.3rem; display:flex; flex-direction:column; gap:.9rem; cursor:pointer;
+  transition:transform .35s var(--ease-out), border-color .3s, background .3s;
+  position:relative; overflow:hidden;
+}
+.problem-card:hover{ transform:translateY(-6px); border-color:rgba(255,255,255,.18); background:var(--glass-fill-strong); }
+.problem-card .card-top{ display:flex; align-items:center; justify-content:space-between; }
+.cat-badge{ display:inline-flex; align-items:center; gap:.4rem; font-size:.7rem; font-weight:600; text-transform:uppercase; letter-spacing:.04em; }
+.cat-badge i{ width:.45rem; height:.45rem; border-radius:999px; }
+.bookmark-btn{ width:1.9rem; height:1.9rem; display:grid; place-items:center; border-radius:999px; transition:background .2s, transform .2s; color:var(--text-tertiary); }
+.bookmark-btn:hover{ background:rgba(255,255,255,.08); transform:scale(1.1); }
+.bookmark-btn.active{ color:var(--accent-secondary); }
+.problem-card h3{ font-family:var(--font-display); font-size:1.08rem; font-weight:600; line-height:1.32; letter-spacing:-.005em; }
+.problem-card .card-context{ font-size:.82rem; color:var(--text-secondary); }
+.card-bottom{ display:flex; flex-wrap:wrap; gap:.5rem; align-items:center; margin-top:auto; }
+.diff-badge{ font-size:.7rem; font-weight:500; color:var(--text-tertiary); font-family:var(--font-mono); }
+.empty-state{ text-align:center; padding:3.5rem 1rem; color:var(--text-secondary); }
+
+/* ============ STATS PANEL ============ */
+.stats-panel{
+  border-radius:var(--radius-lg); background:linear-gradient(160deg,#0d0d16,#08080e); border:1px solid var(--glass-border);
+  padding:3rem 1.75rem;
+}
+@media (min-width:768px){ .stats-panel{ padding:3.5rem 3rem; } }
+.stats-grid{ margin-top:2.5rem; display:grid; grid-template-columns:repeat(2,1fr); gap:2rem; justify-items:center; }
+@media (min-width:768px){ .stats-grid{ grid-template-columns:repeat(4,1fr); } }
+.stat-ring-item .stat-label{ font-size:.82rem; color:var(--text-secondary); }
+
+/* ============ MISSION / FOOTER ============ */
+footer{ position:relative; border-top:1px solid var(--glass-border); padding-top:4rem; padding-bottom:2.25rem; overflow:hidden; }
+.footer-cta{ display:flex; flex-direction:column; gap:1.75rem; padding-bottom:3rem; border-bottom:1px solid var(--glass-border); }
+@media (min-width:1024px){ .footer-cta{ flex-direction:row; align-items:flex-end; justify-content:space-between; } }
+.footer-h2{ font-family:var(--font-display); font-size:clamp(1.8rem,4vw,2.6rem); font-weight:600; letter-spacing:-.02em; max-width:18ch; }
+.footer-cols{ display:grid; grid-template-columns:1fr; gap:2.5rem; padding-block:3rem; }
+@media (min-width:640px){ .footer-cols{ grid-template-columns:1fr 1fr; } }
+@media (min-width:1024px){ .footer-cols{ grid-template-columns:1.4fr 1fr 1fr 1fr; } }
+.footer-cols h4{ font-family:var(--font-mono); font-size:.7rem; text-transform:uppercase; letter-spacing:.06em; color:var(--text-tertiary); margin-bottom:1rem; }
+.footer-cols li{ margin-bottom:.6rem; }
+.footer-cols a{ font-size:.87rem; color:var(--text-secondary); transition:color .2s, transform .2s; display:inline-block; }
+.footer-cols a:hover{ color:#fff; transform:translateX(3px); }
+.footer-tagline{ margin-top:.9rem; max-width:24rem; font-size:.85rem; color:var(--text-secondary); }
+.legal-bar{ display:flex; flex-direction:column; gap:1rem; align-items:center; border-top:1px solid var(--glass-border); padding-top:1.75rem; font-size:.75rem; color:var(--text-tertiary); }
+@media (min-width:640px){ .legal-bar{ flex-direction:row; justify-content:space-between; } }
+.footer-watermark{
+  position:absolute; inset-inline:0; bottom:-2rem; text-align:center; font-family:var(--font-display); font-weight:700;
+  font-size:9rem; color:rgba(255,255,255,.025); pointer-events:none; user-select:none; z-index:-1;
+}
+
+/* ============ NAV OVERLAY (mobile) ============ */
+#nav-overlay{
+  position:fixed; inset:0; z-index:150; background:#05050A; display:flex; flex-direction:column;
+  opacity:0; pointer-events:none; transition:opacity .4s var(--ease-out);
+}
+#nav-overlay.open{ opacity:1; pointer-events:auto; }
+.nav-overlay-top{ display:flex; align-items:center; justify-content:space-between; padding:1.25rem 1.25rem; }
+.nav-overlay-list{ flex:1; display:flex; flex-direction:column; justify-content:center; gap:.4rem; padding:0 1.25rem; }
+.nav-overlay-list button{
+  text-align:left; font-family:var(--font-display); font-size:2rem; font-weight:600; padding-block:.5rem; color:var(--text-secondary);
+  transition:color .3s;
+}
+.nav-overlay-list button:hover{ color:#fff; }
+
+/* ============ MODAL ============ */
+.modal-backdrop{
+  position:fixed; inset:0; z-index:200; display:flex; align-items:flex-end; justify-content:center;
+  background:rgba(5,5,10,.6); backdrop-filter:blur(12px); padding:1rem; opacity:0; pointer-events:none;
+  transition:opacity .35s var(--ease-out);
+}
+@media (min-width:768px){ .modal-backdrop{ align-items:center; } }
+.modal-backdrop.open{ opacity:1; pointer-events:auto; }
+.modal-panel{
+  width:100%; max-width:38rem; max-height:88vh; overflow-y:auto; border-radius:var(--radius-lg);
+  background:#0c0c14; border:1px solid var(--glass-border); padding:1.75rem; position:relative;
+  transform:translateY(24px); transition:transform .35s var(--ease-spring);
+}
+.modal-backdrop.open .modal-panel{ transform:translateY(0); }
+.modal-close{
+  position:absolute; right:1.1rem; top:1.1rem; width:2.2rem; height:2.2rem; border-radius:999px;
+  background:var(--glass-fill); display:grid; place-items:center; transition:background .2s, transform .2s;
+}
+.modal-close:hover{ background:var(--glass-fill-strong); transform:rotate(90deg); }
+.modal-panel h2{ font-family:var(--font-display); font-size:1.5rem; font-weight:600; letter-spacing:-.01em; padding-right:2rem; margin-top:.9rem; }
+.modal-context{ margin-top:.9rem; color:var(--text-secondary); font-size:.92rem; }
+.modal-meta-grid{ margin-top:1.25rem; display:grid; grid-template-columns:1fr 1fr; gap:.9rem; }
+.meta-block{ border:1px solid var(--glass-border); border-radius:.85rem; padding:.8rem .9rem; background:rgba(255,255,255,.03); }
+.meta-block .k{ font-family:var(--font-mono); font-size:.65rem; text-transform:uppercase; letter-spacing:.06em; color:var(--text-tertiary); }
+.meta-block .v{ margin-top:.3rem; font-size:.88rem; font-weight:500; }
+.stack-row{ display:flex; flex-wrap:wrap; gap:.5rem; margin-top:1.1rem; }
+.brief-section{ margin-top:1.5rem; border-top:1px solid var(--glass-border); padding-top:1.4rem; }
+.brief-output{ margin-top:1rem; font-size:.88rem; color:#DCDCE4; white-space:pre-wrap; transition:opacity .35s ease; }
+.brief-output h4{ font-family:var(--font-display); font-size:.95rem; margin-top:1rem; margin-bottom:.35rem; color:#fff; }
+.brief-output ul{ padding-left:1.1rem; list-style:disc; margin-top:.3rem; }
+.brief-output li{ margin-bottom:.3rem; }
+.spinner{ width:1rem; height:1rem; border-radius:999px; border:2px solid rgba(255,255,255,.25); border-top-color:#fff; animation:spin .8s linear infinite; display:inline-block; }
+@keyframes spin{ to{ transform:rotate(360deg); } }
+.modal-actions{ display:flex; flex-wrap:wrap; gap:.7rem; margin-top:1.5rem; }
+
+/* ============ ITCH BOT ============ */
+#itchbot-launcher{
+  position:fixed; right:1.25rem; bottom:1.25rem; z-index:120; width:3.6rem; height:3.6rem; border-radius:999px;
+  background:linear-gradient(135deg,var(--accent-primary),var(--accent-secondary)); display:grid; place-items:center;
+  box-shadow:0 10px 34px -8px rgba(110,91,255,.65); transition:transform .3s var(--ease-out);
+}
+#itchbot-launcher:hover{ transform:scale(1.08); }
+#itchbot-panel{
+  position:fixed; right:1.25rem; bottom:5.25rem; z-index:120; width:min(23rem,90vw); height:min(32rem,70vh);
+  background:#0c0c14; border:1px solid var(--glass-border); border-radius:var(--radius-lg);
+  display:flex; flex-direction:column; overflow:hidden; box-shadow:0 30px 70px -20px rgba(0,0,0,.7);
+  transform:translateY(16px) scale(.97); opacity:0; pointer-events:none; transition:all .3s var(--ease-spring);
+}
+#itchbot-panel.open{ transform:translateY(0) scale(1); opacity:1; pointer-events:auto; }
+.itchbot-head{ display:flex; align-items:center; justify-content:space-between; padding:1rem 1.1rem; border-bottom:1px solid var(--glass-border); }
+.itchbot-head .title{ display:flex; align-items:center; gap:.55rem; font-family:var(--font-display); font-weight:600; font-size:.95rem; }
+.itchbot-body{ flex:1; overflow-y:auto; padding:1rem 1.1rem; display:flex; flex-direction:column; gap:.75rem; }
+.msg{ max-width:85%; padding:.6rem .85rem; border-radius:.9rem; font-size:.85rem; line-height:1.45; }
+.msg.bot{ align-self:flex-start; background:var(--glass-fill); border:1px solid var(--glass-border); }
+.msg.user{ align-self:flex-end; background:var(--accent-primary); color:#fff; }
+.itchbot-form{ display:flex; gap:.6rem; padding:.9rem; border-top:1px solid var(--glass-border); }
+.itchbot-form input{
+  flex:1; background:rgba(255,255,255,.04); border:1px solid var(--glass-border); border-radius:.8rem;
+  padding:.6rem .85rem; font-size:.85rem; outline:none;
+}
+.itchbot-form input:focus{ border-color:var(--accent-secondary); }
+.itchbot-send{ width:2.5rem; height:2.5rem; border-radius:.8rem; background:var(--accent-primary); display:grid; place-items:center; flex-shrink:0; transition:transform .2s; }
+.itchbot-send:hover{ transform:scale(1.06); }
+.itchbot-send:disabled{ opacity:.5; cursor:default; }
+
+/* utility */
+.icon{ width:1em; height:1em; }
+.hidden{ display:none !important; }
+</style>
+</head>
+<body>
+
+<a href="#home" class="skip-link">Skip to content</a>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#00E5FF"/>
+      <stop offset="100%" stop-color="#6E5BFF"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<canvas id="starfield" aria-hidden="true"></canvas>
+
+<!-- LOADER: AI VAULT -->
+<div id="loader" aria-hidden="true">
+  <div class="vault-doors">
+    <div class="vault-door left"></div>
+    <div class="vault-door right"></div>
+  </div>
+  <div class="vault-scanline"></div>
+  <div class="loader-brand">
+    <svg viewBox="0 0 48 48" fill="currentColor"><path d="M24 2c2.2 13.8 7.9 19.6 22 22-14.1 2.4-19.8 8.2-22 22-2.2-13.8-7.9-19.6-22-22 14.1-2.4 19.8-8.2 22-22Z"/></svg>
+    StudentItch
+  </div>
+  <p class="loader-sub">Waking a raw idea into a build-worthy problem.</p>
+  <div class="loader-status" id="loaderStatus">Scanning problem bank…</div>
+  <div class="loader-bar-wrap">
+    <div class="loader-track"><div class="loader-fill" id="loaderFill"></div></div>
+    <div class="loader-meta"><span>Loading bank</span><b id="loaderCount">000</b></div>
+  </div>
+</div>
+
+<canvas id="seed-canvas" aria-hidden="true"></canvas>
+<div class="idea-core-label"><i></i>The Idea Core — every problem, one crystal</div>
+
+<header class="site-header">
+  <div class="shell header-inner">
+    <a href="#home" class="brand">
+      <svg viewBox="0 0 48 48" fill="currentColor"><path d="M24 2c2.2 13.8 7.9 19.6 22 22-14.1 2.4-19.8 8.2-22 22-2.2-13.8-7.9-19.6-22-22 14.1-2.4 19.8-8.2 22-22Z"/></svg>
+      StudentItch
+    </a>
+    <nav class="primary-nav">
+      <a href="#top">Top Problems</a>
+      <a href="#browse">Browse</a>
+      <a href="#stats">By the numbers</a>
+      <a href="#mission">Mission</a>
+    </nav>
+    <div class="header-actions">
+      <button class="pill-btn ghost" id="openBotBtnHeader">Ask Itch Bot</button>
+      <button class="pill-btn dark menu-btn" id="menuOpenBtn" aria-haspopup="true" aria-expanded="false">Menu</button>
+    </div>
+  </div>
+</header>
+
+<main id="home-anchor">
+
+  <section id="home">
+    <div class="shell hero-grid">
+      <div>
+        <span class="eyebrow reveal"><span class="dot"></span>AI-curated problem bank</span>
+        <h1 class="hero-h1 reveal">1000+ real problems.<br>Pick one. <span class="grad">Build it.</span></h1>
+        <p class="hero-sub reveal">StudentItch is a credible, well-scoped bank of real-world engineering and hackathon problem statements — tagged by domain, difficulty, and a Build Score that tells you if it's actually finishable in a semester. No more staring at a blank final-year-project doc.</p>
+        <p class="reveal" style="margin-top:.9rem;font-family:var(--font-mono);font-size:.78rem;letter-spacing:.06em;color:var(--accent-secondary);">Every startup begins with one problem.</p>
+        <div class="hero-ctas reveal">
+          <a href="#top" class="pill-btn accent">Show Me Top Problems</a>
+          <a href="#browse" class="pill-btn ghost">Browse All 60+</a>
+        </div>
+        <div class="hero-stats reveal">
+          <div class="hero-stat"><b class="stat-number" data-value="60" data-suffix="+">0</b><span>Problems</span></div>
+          <div class="hero-stat"><b class="stat-number" data-value="16">0</b><span>Categories</span></div>
+          <div class="hero-stat"><b class="stat-number" data-value="100" data-suffix="%">0</b><span>AI-scored</span></div>
+        </div>
+      </div>
+
+      <div class="hero-card-col">
+        <div class="glass-card itch-preview reveal" id="heroPreviewCard">
+          <div class="itch-preview-top">
+            <span class="tag">Featured problem</span>
+            <span class="build-score high" id="heroPreviewScore">— </span>
+          </div>
+          <div class="itch-preview-title" id="heroPreviewTitle">Loading…</div>
+          <div class="itch-preview-meta" id="heroPreviewMeta"></div>
+        </div>
+        <div class="glass-card reveal" style="padding:1.25rem;">
+          <p style="font-size:.8rem;color:var(--text-secondary);">Every problem ships with a suggested stack, a time estimate, and a one-click AI-generated project brief — so scoping stops being the hardest part.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="universe" style="padding-block:3.5rem 4rem;border-top:1px solid var(--glass-border);border-bottom:1px solid var(--glass-border);">
+    <div class="shell">
+      <div class="section-head reveal" style="margin-bottom:1.75rem;">
+        <span class="eyebrow"><span class="dot"></span>The problem universe</span>
+        <h2 class="section-h2" style="font-size:1.5rem;">Sixteen categories. Pick a planet.</h2>
+        <p class="section-p" style="max-width:44ch;">Every planet is a category. Click one to fly straight to its problems below.</p>
+      </div>
+      <div class="planets-wrap" id="planetsWrap"></div>
+    </div>
+  </section>
+
+  <section id="top">
+    <div class="shell">
+      <div class="section-head reveal">
+        <span class="eyebrow"><span class="dot"></span>Swipe deck</span>
+        <h2 class="section-h2">Top 10, ranked by Build Score</h2>
+        <p class="section-p">Swipe right to save, left to skip. Refreshed by feasibility, not hype.</p>
+      </div>
+      <div class="deck-layout">
+        <div class="deck-stage reveal" id="deckStage"></div>
+        <div>
+          <div class="glass-card" style="padding:1.5rem;">
+            <h3 style="font-family:var(--font-display);font-size:1.1rem;font-weight:600;">How the deck works</h3>
+            <p style="margin-top:.8rem;font-size:.88rem;color:var(--text-secondary);">Each card is a real problem statement. Drag it, or use the buttons below. Saved problems are stored to your session and marked with a bookmark everywhere on the site.</p>
+            <div class="deck-controls">
+              <button class="deck-round-btn skip" id="deckSkipBtn" aria-label="Skip"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4l16 16M20 4 4 20"/></svg></button>
+              <button class="deck-round-btn save" id="deckSaveBtn" aria-label="Save"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 21s-7-4.35-9.5-8.5C.5 8.5 3 5 6.5 5c1.9 0 3.3 1 4.5 2.5C12.2 6 13.6 5 15.5 5 19 5 21.5 8.5 20.5 12.5 18 16.65 12 21 12 21z"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="browse">
+    <div class="shell">
+      <div class="section-head reveal">
+        <span class="eyebrow"><span class="dot"></span>Full bank</span>
+        <h2 class="section-h2">Browse every problem</h2>
+        <p class="section-p">Filter by category, difficulty, and feasibility. Search for a stack or keyword.</p>
+      </div>
+      <div class="browse-layout">
+        <aside class="filter-panel reveal">
+          <div class="filter-group">
+            <label class="group-label" for="searchInput">Ask the AI Orb</label>
+            <div class="search-orb-row" id="searchOrbRow">
+              <div class="search-orb" aria-hidden="true"></div>
+              <input class="search-input" id="searchInput" type="text" placeholder="e.g. computer vision, UPI…" />
+            </div>
+          </div>
+          <div class="filter-group">
+            <label class="group-label">Category</label>
+            <div class="chip-toggle-row" id="catFilterRow"></div>
+          </div>
+          <div class="filter-group">
+            <label class="group-label">Difficulty</label>
+            <div class="chip-toggle-row" id="diffFilterRow"></div>
+          </div>
+          <div class="filter-group">
+            <label class="group-label">Minimum Build Score: <span class="range-value" id="scoreRangeLabel">0</span></label>
+            <input type="range" id="scoreRange" min="0" max="100" value="0" step="5" />
+          </div>
+          <div class="filter-group">
+            <label class="group-label">Saved only</label>
+            <div class="chip-toggle-row">
+              <button class="chip-toggle" id="savedOnlyToggle" aria-pressed="false">Show saved only</button>
+            </div>
+          </div>
+          <button class="reset-filters" id="resetFiltersBtn">Reset all filters</button>
+        </aside>
+        <div>
+          <div class="browse-toolbar">
+            <span class="result-count" id="resultCount">60 problems</span>
+            <select class="sort-select" id="sortSelect">
+              <option value="score">Sort: Build Score (high → low)</option>
+              <option value="difficulty">Sort: Difficulty (easy → hard)</option>
+              <option value="recent">Sort: Recently added</option>
+            </select>
+          </div>
+          <div class="problem-grid" id="problemGrid"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="stats">
+    <div class="shell">
+      <div class="stats-panel reveal">
+        <span class="eyebrow"><span class="dot"></span>By the numbers</span>
+        <h2 class="section-h2" style="max-width:20ch;">Proof in the scope, not the pitch.</h2>
+        <div class="stats-grid">
+          <div class="stat-ring-item reveal">
+            <div class="stat-ring-wrap">
+              <svg class="stat-ring-svg" viewBox="0 0 108 108" width="112" height="112">
+                <circle class="stat-ring-track" cx="54" cy="54" r="48"/>
+                <circle class="stat-ring-value-arc" cx="54" cy="54" r="48" data-value="60" data-max="100"/>
+              </svg>
+              <div class="stat-ring-num"><span class="stat-number" data-value="60" data-suffix="+">0</span></div>
+            </div>
+            <div class="stat-label">Problem statements</div>
+          </div>
+          <div class="stat-ring-item reveal">
+            <div class="stat-ring-wrap">
+              <svg class="stat-ring-svg" viewBox="0 0 108 108" width="112" height="112">
+                <circle class="stat-ring-track" cx="54" cy="54" r="48"/>
+                <circle class="stat-ring-value-arc" cx="54" cy="54" r="48" data-value="16" data-max="20"/>
+              </svg>
+              <div class="stat-ring-num"><span class="stat-number" data-value="16">0</span></div>
+            </div>
+            <div class="stat-label">Domains covered</div>
+          </div>
+          <div class="stat-ring-item reveal">
+            <div class="stat-ring-wrap">
+              <svg class="stat-ring-svg" viewBox="0 0 108 108" width="112" height="112">
+                <circle class="stat-ring-track" cx="54" cy="54" r="48"/>
+                <circle class="stat-ring-value-arc" cx="54" cy="54" r="48" data-value="72" data-max="100"/>
+              </svg>
+              <div class="stat-ring-num"><span class="stat-number" data-value="72" data-suffix="%">0</span></div>
+            </div>
+            <div class="stat-label">Avg Build Score</div>
+          </div>
+          <div class="stat-ring-item reveal">
+            <div class="stat-ring-wrap">
+              <svg class="stat-ring-svg" viewBox="0 0 108 108" width="112" height="112">
+                <circle class="stat-ring-track" cx="54" cy="54" r="48"/>
+                <circle class="stat-ring-value-arc" cx="54" cy="54" r="48" data-value="4" data-max="14"/>
+              </svg>
+              <div class="stat-ring-num"><span class="stat-number" data-value="4" data-suffix="-14wk">0</span></div>
+            </div>
+            <div class="stat-label">Typical build window</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="final-scene">
+    <div class="shell">
+      <span class="eyebrow" style="justify-content:center;"><span class="dot"></span>The core reforms</span>
+      <p class="fs-tagline reveal">Every startup begins with <span class="grad">one problem.</span></p>
+      <a href="#top" class="pill-btn accent" id="startBuildingBtn">Start Building</a>
+    </div>
+  </section>
+
+</main>
+
+<footer id="mission">
+  <div class="shell">
+    <div class="footer-cta">
+      <h2 class="footer-h2 reveal">Got a problem worth adding? Submit it to the bank.</h2>
+      <button class="pill-btn accent" id="submitProblemBtn">Submit a Problem</button>
+    </div>
+    <div class="footer-cols">
+      <div>
+        <div class="brand" style="margin-bottom:.6rem;">
+          <svg viewBox="0 0 48 48" fill="currentColor" style="width:1.1rem;height:1.1rem;color:var(--accent-secondary);"><path d="M24 2c2.2 13.8 7.9 19.6 22 22-14.1 2.4-19.8 8.2-22 22-2.2-13.8-7.9-19.6-22-22 14.1-2.4 19.8-8.2 22-22Z"/></svg>
+          StudentItch
+        </div>
+        <p class="footer-tagline">An AI-curated bank of real-world problem statements, built so engineering students stop hunting for a project idea and start shipping one.</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul><li><a href="#top">Top Problems</a></li><li><a href="#browse">Browse All</a></li><li><a href="#stats">By the numbers</a></li></ul>
+      </div>
+      <div>
+        <h4>Categories</h4>
+        <ul><li><a href="#browse" data-cat="Healthcare">Healthcare</a></li><li><a href="#browse" data-cat="EdTech">EdTech</a></li><li><a href="#browse" data-cat="FinTech">FinTech</a></li><li><a href="#browse" data-cat="Agriculture">Agriculture</a></li></ul>
+      </div>
+      <div>
+        <h4>Studio</h4>
+        <ul><li><a href="#mission">Mission</a></li><li><a href="#" id="footerBotLink">Ask Itch Bot</a></li><li><a href="https://github.com/Kundana76" target="_blank" rel="noopener">GitHub</a></li></ul>
+      </div>
+    </div>
+    <div class="legal-bar">
+      <span>© 2026 StudentItch. Built by student developers, for student developers.</span>
+      <span>Problem bank grows weekly — check back often.</span>
+    </div>
+  </div>
+  <div class="footer-watermark" aria-hidden="true">ITCH</div>
+</footer>
+
+<!-- NAV OVERLAY -->
+<div id="nav-overlay">
+  <div class="nav-overlay-top">
+    <span class="brand"><svg viewBox="0 0 48 48" fill="currentColor" style="width:1.1rem;height:1.1rem;color:var(--accent-secondary);"><path d="M24 2c2.2 13.8 7.9 19.6 22 22-14.1 2.4-19.8 8.2-22 22-2.2-13.8-7.9-19.6-22-22 14.1-2.4 19.8-8.2 22-22Z"/></svg>StudentItch</span>
+    <button class="modal-close" id="menuCloseBtn" aria-label="Close menu"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4l16 16M20 4 4 20"/></svg></button>
+  </div>
+  <div class="nav-overlay-list">
+    <button data-target="#home">Home</button>
+    <button data-target="#top">Top Problems</button>
+    <button data-target="#browse">Browse</button>
+    <button data-target="#stats">By the numbers</button>
+    <button data-target="#mission">Mission</button>
+  </div>
+</div>
+
+<!-- PROBLEM DETAIL MODAL -->
+<div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true">
+  <div class="modal-panel" id="modalPanel">
+    <div class="modal-scanline"></div>
+    <button class="modal-close" id="modalCloseBtn" aria-label="Close"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4l16 16M20 4 4 20"/></svg></button>
+    <span class="cat-badge stagger-el" id="modalCat"></span>
+    <h2 class="stagger-el" id="modalTitle"></h2>
+    <p class="modal-context stagger-el" id="modalContext"></p>
+    <div class="modal-meta-grid stagger-el">
+      <div class="meta-block"><div class="k">Build Score</div><div class="v" id="modalScore"></div></div>
+      <div class="meta-block"><div class="k">Difficulty</div><div class="v" id="modalDifficulty"></div></div>
+      <div class="meta-block"><div class="k">Time to build</div><div class="v" id="modalTime"></div></div>
+      <div class="meta-block"><div class="k">Data availability</div><div class="v" id="modalData"></div></div>
+    </div>
+    <div class="stack-row stagger-el" id="modalStack"></div>
+    <div class="modal-actions stagger-el">
+      <button class="pill-btn accent" id="generateBriefBtn">Generate Project Brief</button>
+      <button class="pill-btn ghost" id="modalBookmarkBtn">Save problem</button>
+    </div>
+    <div class="brief-section hidden" id="briefSection">
+      <div class="eyebrow"><span class="dot"></span>AI-generated brief</div>
+      <div class="brief-output" id="briefOutput"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ITCH BOT (holographic AI assistant) -->
+<button id="itchbot-launcher" aria-label="Open Itch Bot">
+  <span class="orb-ring"></span>
+  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" style="width:1.5rem;height:1.5rem;"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+</button>
+<div id="itchbot-panel">
+  <div class="itchbot-head">
+    <span class="title"><svg class="icon" viewBox="0 0 48 48" fill="currentColor" style="color:var(--accent-secondary);"><path d="M24 2c2.2 13.8 7.9 19.6 22 22-14.1 2.4-19.8 8.2-22 22-2.2-13.8-7.9-19.6-22-22 14.1-2.4 19.8-8.2 22-22Z"/></svg>Itch Bot</span>
+    <div class="bot-voice-wave hidden" id="botVoiceWave"><i></i><i></i><i></i><i></i></div>
+    <button class="modal-close" id="itchbotCloseBtn" aria-label="Close chat"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4l16 16M20 4 4 20"/></svg></button>
+  </div>
+  <div class="itchbot-body" id="itchbotBody">
+    <div class="msg bot">Hey! I'm Itch Bot. Tell me your skill level, interests, and how many weeks you have — I'll pick 3–5 problems from the bank for you.</div>
+  </div>
+  <form class="itchbot-form" id="itchbotForm">
+    <input type="text" id="itchbotInput" placeholder="Ask about a problem, stack, or timeline…" autocomplete="off" />
+    <button class="itchbot-send" id="itchbotSendBtn" aria-label="Send"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg></button>
+  </form>
+</div>
+
+<script type="application/json" id="problems-data">
+[{"id": "healthcare-01-why-cant-rural-patients-get-a", "title": "Why can't rural patients get a preliminary skin-condition assessment without traveling to a dermatologist?", "category": "Healthcare", "context": "A real gap in preventive and everyday care, especially for people without easy access to specialists.", "buildScore": 76, "difficulty": "Intermediate", "suggestedStack": ["React Native", "TensorFlow Lite", "FastAPI", "PostgreSQL"], "domainTags": ["computer-vision", "health-tech", "mobile"], "estimatedTimeWeeks": [6, 10], "dataAvailability": "Needs field collection", "source": "AI-curated"}, {"id": "healthcare-02-why-is-there-no-simple-app", "title": "Why is there no simple app to track medication adherence for elderly patients living alone?", "category": "Healthcare", "context": "A real gap in preventive and everyday care, especially for people without easy access to specialists.", "buildScore": 69, "difficulty": "Beginner", "suggestedStack": ["React Native", "TensorFlow Lite", "FastAPI", "PostgreSQL"], "domainTags": ["computer-vision", "health-tech", "mobile"], "estimatedTimeWeeks": [4, 10], "dataAvailability": "Public dataset exists", "source": "AI-curated"}, {"id": "healthcare-03-why-cant-students-self-screen-for-early", "title": "Why can't students self-screen for early signs of eye strain from long screen time?", "category": "Healthcare", "context": "A real gap in preventive and everyday care, especially for people without easy access to specialists.", "buildScore": 81, "difficulty": "Beginner", "suggestedStack": ["React Native", "TensorFlow Lite", "FastAPI", "PostgreSQL"], "domainTags": ["computer-vision", "health-tech", "mobile"], "estimatedTimeWeeks": [4, 8], "dataAvailability": "Needs field collection", "source": "AI-curated"}, {"id": "healthcare-04-why-is-mental-health-first-aid-training-inacce", "title": "Why is mental-health first-aid training inaccessible to college students in tier-2/3 cities?", "category": "Healthcare", "context": "A real gap in preventive and everyday care, especially for people without easy access to specialists.", "buildScore": 92, "difficulty": "Advanced", "suggestedStack": ["React Native", "TensorFlow Lite", "FastAPI", "PostgreSQL"], "domainTags": ["computer-vision", "health-tech", "mobile"], "estimatedTimeWeeks": [8, 14], "dataAvailability": "Needs field collection", "source": "AI-curated"}, {"id": "healthcare-05-why-cant-diabetic-patients-get-an", "title": "Why can't diabetic patients get an easy photo-based meal glycemic-index estimate?", "category": "Healthcare", "context": "A real gap in preventive and everyday care, especially for people without easy access to specialists.", "buildScore": 86, "difficulty": "Advanced", "suggestedStack": ["React Native", "TensorFlow Lite", "FastAPI", "PostgreSQL"], "domainTags": ["computer-vision", "health-tech", "mobile"], "estimatedTimeWeeks": [8, 12], "dataAvailability": "Needs synthetic data", "source": "AI-curated"}, {"id": "edtech-06-why-do-first-generation-college-students-lack", "title": "Why do first-generation college students lack a structured way to navigate scholarship applications?", "category": "EdTech", "context": "A daily friction point for students that most edtech products still treat as an afterthought.", "buildScore": 82, "difficulty": "Intermediate", "suggestedStack": ["Next.js", "Whisper API", "Supabase", "Tailwind"], "domainTags": ["nlp", "speech", "education"], "estimatedTimeWeeks": [6, 12], "dataAvailability": "Needs field collection", "source": "AI-curated"}, {"id": "edtech-07-why-is-there-no-adaptive-practice", "title": "Why is there no adaptive practice tool for regional-language board exam students?", "category": "EdTech", "context": "A daily friction point for students that most edtech products still treat as an afterthought.", "buildScore": 54, "difficulty": "Beginner", "suggestedStack": ["Next.js", "Whisper API", "Supabase", "Tailwind"], "domainTags": ["nlp", "speech", "education"], "estimatedTimeWeeks": [4, 10], "dataAvailability": "Needs synthetic data", "source": "AI-curated"}, {"id": "edtech-08-why-cant-students-get-instant-feedback", "title": "Why can't students get instant feedback on spoken English pronunciation for placement interviews?", "category": "EdTech", "context": "A daily friction point for students that most edtech products still treat as an afterthought.", "buildScore": 56, "difficulty": "Advanced", "suggestedStack": ["Next.js", "Whisper API", "Supabase", "Tailwind"], "domainTags": ["nlp", "speech", "education"], "estimatedTimeWeeks": [8, 14], "dataAvailability": "Public dataset exists", "source": "AI-curated"}, {"id": "edtech-09-why-is-peer-to-peer-doubt-solving-for-engineering", "title": "Why is peer-to-peer doubt-solving for engineering subjects still scattered across WhatsApp groups?", "category": "EdTech", "context": "A daily friction point for students that most edtech products still treat as an afterthought.", "buildScore": 54, "difficulty": "Beginner", "suggestedStack": ["Next.js", "Whisper API", "Supabase", "Tailwind"], "domainTags": ["nlp", "speech", "education"], "estimatedTimeWeeks": [4, 8], "dataAvailability": "Needs synthetic data", "source": "AI-curated"}, {"id": "edtech-10-why-cant-visually-impaired-students-easily", "title": "Why can't visually impaired students easily convert textbook diagrams into audio descriptions?", "category": "EdTech", "context": "A daily friction point for students that most edtech products still treat as an afterthought.", "buildScore": 78, "difficulty": "Beginner", "suggestedStack": ["Next.js", "Whisper API", "Supabase", "Tailwind"], "domainTags": ["nlp", "speech", "education"], "estimatedTimeWeeks": [4, 8], "dataAvailability": "Public dataset exists", "source": "AI-curated"}, {"id": "agriculture-11-why-cant-small-farmers-get-an", "title": "Why can't small farmers get an offline-capable crop-disease diagnosis from a phone photo?", "category": "Agriculture", "context": "A recurring pain point for smallholder farmers who can't afford enterprise agri-tech tooling.", "buildScore": 49, "difficulty": "Intermediate", "suggestedStack": ["Flutter", "TensorFlow Lite", "Firebase", "Node.js"], "domainTags": ["computer-vision", "IoT", "agri-tech"], "estimatedTimeWeeks": [6, 12], "dataAvailability": "Needs field collection", "source": "AI-curated"}, {"id": "agriculture-12-why-is-there-no-simple-tool", "title": "Why is there no simple tool to predict optimal harvest timing using local weather + soil data?", "category": "Agriculture", "context": "A recurring pain point for smallholder farmers who can't afford enterprise agri-tech tooling.", "buildScore": 79, "difficulty": "Intermediate", "suggestedStack": ["Flutter", "TensorFlow Lite", "Firebase", "Node.js"], "domainTags": ["computer-vision", "IoT", "agri-tech"], "estimatedTimeWeeks": [6, 10], "dataAvailability": "Needs field collection", "source": "AI-curated"}, {"id": "agriculture-13-why-cant-farmers-verify-fair-mandi", "title": "Why can't farmers verify fair mandi (market) prices in real time before selling produce?", "category": "Agriculture", "context": "A recurring pain point for smallholder farmers who can't afford enterprise agri-tech tooling.", "buildScore": 83, "difficulty": "Advanced", "suggestedStack": ["Flutter", "TensorFlow Lite", "Firebase", "Node.js"], "domainTags": ["computer-vision", "IoT", "agri-tech"], "estimatedTimeWeeks": [8, 12], "dataAvailability": "Needs field collection", "source": "AI-curated"}, {"id": "agriculture-14-why-is-water-usage-tracking-for-drip", "title": "Why is water-usage tracking for drip irrigation inaccessible to smallholder farmers?", "category": "Agriculture", "context": "A recurring pain point for smallholder farmers who can't afford enterprise agri-tech tooling.", "buildScore": 95, "difficulty": "Advanced", "suggestedStack": ["Flutter", "TensorFlow Lite", "Firebase", "Node.js"], "domainTags": ["computer-vision", "IoT", "agri-tech"], "estimatedTimeWeeks": [8, 12], "dataAvailability": "Needs field collection", "source": "AI-curated"}, {"id": "fintech-15-why-cant-gig-workers-get-a", "title": "Why can't gig workers get a simple, visual breakdown of their fluctuating monthly income for loan eligibility?", "category": "FinTech", "context": "A trust and clarity gap in everyday money management that underserved users face constantly.", "buildScore": 82, "difficulty": "Intermediate", "suggestedStack": ["React", "Node.js", "PostgreSQL", "Chart.js"], "domainTags": ["fintech", "data-viz", "OCR"], "estimatedTimeWeeks": [6, 10], "dataAvailability": "Needs field collection", "source": "AI-curated"}, {"id": "fintech-16-why-is-there-no-beginner-friendly-tool", "title": "Why is there no beginner-friendly tool that explains a person's credit score in plain language with actionable steps?", "category": "FinTech", "context": "A trust and clarity gap in everyday money management that underserved users face constantly.", "buildScore": 88, "difficulty": "Intermediate", "suggestedStack": ["React", "Node.js", "PostgreSQL", "Chart.js"], "domainTags": ["fintech", "data-viz", "OCR"], "estimatedTimeWeeks": [6, 12], "dataAvailability": "Needs synthetic data", "source": "AI-curated"}, {"id": "fintech-17-why-cant-small-shopkeepers-reconcile-daily", "title": "Why can't small shopkeepers reconcile daily UPI + cash transactions without manual bookkeeping?", "category": "FinTech", "context": "A trust and clarity gap in everyday money management that underserved users face constantly.", "buildScore": 56, "difficulty": "Advanced", "suggestedStack": ["React", "Node.js", "PostgreSQL", "Chart.js"], "domainTags": ["fintech", "data-viz", "OCR"], "estimatedTimeWeeks": [8, 14], "dataAvailability": "Public dataset exists", "source": "AI-curated"}, {"id": "fintech-18-why-do-students-lack-a-simple", "title": "Why do students lack a simple expense-splitting + budgeting tool tailored to hostel/PG life?", "category": "FinTech", "context": "A trust and clarity gap in everyday money management that underserved users face constantly.", "buildScore": 94, "difficulty": "Intermediate", "suggestedStack": ["React", "Node.js", "PostgreSQL", "Chart.js"], "domainTags": ["fintech", "data-viz", "OCR"], "estimatedTimeWeeks": [6, 12], "dataAvailability": "Public dataset exists", "source": "AI-curated"}, {"id": "logistics-19-why-cant-local-kirana-stores-get", "title": "Why can't local kirana stores get real-time delivery-partner availability without a large aggregator?", "category": "Logistics", "context": "A coordination problem that large aggregators solve for themselves but never for small players.", "buildScore": 56, "difficulty": "Advanced", "suggestedStack": ["React Native", "Node.js", "Google Maps API", "Redis"], "domainTags": ["routing", "real-time", "maps"], "estimatedTimeWeeks": [8, 12], "dataAvailability": "Needs synthetic data", "source": "AI-curated"}, {"id": "logistics-20-why-is-last-mile-delivery-tracking-for", "title": "Why is last-mile delivery tracking for college food-delivery collectives still manual?", "category": "Logistics", "context": "A coordination problem that large aggregators solve for themselves but never for small players.", "buildScore": 84, "difficulty": "Beginner", "suggestedStack": ["React Native", "Node.js", "Google Maps API", "Redis"], "domainTags": ["routing", "real-time", "maps"], "estimatedTimeWeeks": [4, 8], "dataAvailability": "Needs synthetic data", "source": "AI-curated"}, {"id": "consumer-services-21-why-cant-consumers-verify-a-service", "title": "Why can't consumers verify a service professional's (electrician/plumber) actual completed-job history?", "category": "Consumer Services", "context": "A verification and trust gap between consumers and local service providers.", "buildScore": 87, "difficulty": "Beginner", "suggestedStack": ["Next.js", "Supabase", "Stripe", "Tailwind"], "domainTags": ["marketplace", "trust-safety", "reviews"], "estimatedTimeWeeks": [4, 10], "dataAvailability": "Public dataset exists", "source": "AI-curated"}, {"id": "consumer-services-22-why-is-there-no-reliable-way", "title": "Why is there no reliable way to estimate real repair costs before an appliance technician visits?", "category": "Consumer Services", "context": "A verification and trust gap between consumers and local service providers.", "buildScore": 51, "difficulty": "Beginner", "suggestedStack": ["Next.js", "Supabase", "Stripe", "Tailwind"], "domainTags": ["marketplace", "trust-safety", "reviews"], "estimatedTimeWeeks": [4, 8], "dataAvailability": "Needs field collection", "source": "AI-curated"}, {"id": "environment-23-why-cant-residents-easily-report-and", "title": "Why can't residents easily report and track resolution of local waste-dumping hotspots?", "category": "Environment", "context": "A measurement gap that keeps well-intentioned action from turning into verified impact.", "buildScore": 48, "difficulty": "Beginner", "suggestedStack": ["React", "Python", "Chart.js", "PostgreSQL"], "domainTags": ["sensors", "sustainability", "data-viz"], "estimatedTimeWeeks": [4, 10], "dataAvailability": "Public dataset exists", "source": "AI-curated"}, {"id": "environment-24-why-is-household-water-quality-testing-inacce", "title": "Why is household water-quality testing inaccessible without expensive lab visits?", "category": "Environment", "context": "A measurement gap that keeps well-intentioned action from turning into verified impact.", "buildScore": 85, "difficulty": "Intermediate", "suggestedStack": ["React", "Python", "Chart.js", "PostgreSQL"], "domainTags": ["sensors", "sustainability", "data-viz"], "estimatedTimeWeeks": [6, 10], "dataAvailability": "Needs synthetic data", "source": "AI-curated"}, {"id": "environment-25-why-cant-apartment-communities-track-and", "title": "Why can't apartment communities track and gamify their collective carbon footprint reduction?", "category": "Environment", "context": "A measurement gap that keeps well-intentioned action from turning into verified impact.", "buildScore": 71, "difficulty": "Advanced", "suggestedStack": ["React", "Python", "Chart.js", "PostgreSQL"], "domainTags": ["sensors", "sustainability", "data-viz"], "estimatedTimeWeeks": [8, 12], "dataAvailability": "Needs field collection", "source": "AI-curated"}, {"id": "accessibility-26-why-is-campus-navigation-for-wheelchair", "title": "Why is campus navigation for wheelchair users still dependent on asking people rather than mapped data?", "category": "Accessibility", "context": "An everyday barrier that assistive tooling still leaves unsolved for a specific group of users.", "buildScore": 51, "difficulty": "Beginner", "suggestedStack": ["React Native", "Web Speech API", "Firebase", "TypeScript"], "domainTags": ["accessibility", "speech", "nlp"], "estimatedTimeWeeks": [4, 8], "dataAvailability": "Public dataset exists", "source": "AI-curated"}, {"id": "accessibility-27-why-cant-hearing-impaired-students-get-real", "title": "Why can't hearing-impaired students get real-time captioning for offline classroom lectures?", "category": "Accessibility", "context": "An everyday barrier that assistive tooling still leaves unsolved for a specific group of users.", "buildScore": 82, "difficulty": "Intermediate", "suggestedStack": ["React Native", "Web Speech API", "Firebase", "TypeScript"], "domainTags": ["accessibility", "speech", "nlp"], "estimatedTimeWeeks": [6, 12], "dataAvailability": "Public dataset exists", "source": "AI-curated"}, {"id": "governance-28-why-is-tracking-the-status-of", "title": "Why is tracking the status of a filed RTI (Right to Information) request still opaque and manual?", "category": "Governance", "context": "A transparency gap between citizens and the systems meant to serve them.", "buildScore": 59, "difficulty": "Advanced", "suggestedStack": ["Next.js", "PostgreSQL", "Puppeteer", "Tailwind"], "domainTags": ["civic-tech", "scraping", "govtech"], "estimatedTimeWeeks": [8, 12], "dataAvailability": "Needs synthetic data", "source": "AI-curated"}, {"id": "governance-29-why-cant-citizens-easily-find-which", "title": "Why can't citizens easily find which local government scheme they're eligible for?", "category": "Governance", "context": "A transparency gap between citizens and the systems meant to serve them.", "buildScore": 92, "difficulty": "Advanced", "suggestedStack": ["Next.js", "PostgreSQL", "Puppeteer", "Tailwind"], "domainTags": ["civic-tech", "scraping", "govtech"], "estimatedTimeWeeks": [8, 12], "dataAvailability": "Public dataset exists", "source": "AI-curated"}, {"id": "housing-30-why-cant-renters-access-a-verified", "title": "Why can't renters access a verified checklist of common hidden issues before signing a lease?", "category": "Housing", "context": "A recurring friction point in renting and shared-living that's handled informally today.", "buildScore": 64, "difficulty": "Intermediate", "suggestedStack": ["React", "Node.js", "MongoDB", "Tailwind"], "domainTags": ["marketplace", "fintech", "housing"], "estimatedTimeWeeks": [6, 12], "dataAvailability": "Public dataset exists", "source": "AI-curated"}, {"id": "housing-31-why-is-splitting-pg/flatshare-utility-bills", "title": "Why is splitting PG/flatshare utility bills among students still done over spreadsheets and guesswork?", "category": "Housing", "context": "A recurring friction point in renting and shared-living that's handled informally today.", "buildScore": 49, "difficulty": "Intermediate", "suggestedStack": ["React", "Node.js", "MongoDB", "Tailwind"], "domainTags": ["marketplace", "fintech", "housing"], "estimatedTimeWeeks": [6, 10], "dataAvailability": "Needs synthetic data", "source": "AI-curated"}, {"id": "career-employment-32-why-do-final-year-students-lack-a", "title": "Why do final-year students lack a structured way to map their skills to realistic job-role gaps?", "category": "Career/Employment", "context": "A structural mismatch between what students have and what recruiters actually filter for.", "buildScore": 51, "difficulty": "Beginner", "suggestedStack": ["Next.js", "OpenAI/Claude API", "PostgreSQL", "Tailwind"], "domainTags": ["nlp", "career-tech", "matching"], "estimatedTimeWeeks": [4, 8], "dataAvailability": "Public dataset exists", "source": "AI-curated"}, {"id": "career-employment-33-why-is-resume-to-job-description-match-", "title": "Why is resume-to-job-description match scoring inaccessible without paid tools?", "category": "Career/Employment", "context": "A structural mismatch between what students have and what recruiters actually filter for.", "buildScore": 69, "difficulty": "Beginner", "suggestedStack": ["Next.js", "OpenAI/Claude API", "PostgreSQL", "Tailwind"], "domainTags": ["nlp", "career-tech", "matching"], "estimatedTimeWeeks": [4, 10], "dataAvailability": "Needs synthetic data", "source": "AI-curated"}, {"id": "career-employment-34-why-cant-students-find-verified-recent", "title": "Why can't students find verified, recent placement/interview experiences specific to their college?", "category": "Career/Employment", "context": "A structural mismatch between what students have and what recruiters actually filter for.", "buildScore": 74, "difficulty": "Advanced", "suggestedStack": ["Next.js", "OpenAI/Claude API", "PostgreSQL", "Tailwind"], "domainTags": ["nlp", "career-tech", "matching"], "estimatedTimeWeeks": [8, 12], "dataAvailability": "Needs field collection", "source": "AI-curated"}, {"id": "transportation-35-why-cant-college-students-get-reliable", "title": "Why can't college students get reliable shared-auto/cab pooling matched by route and timing?", "category": "Transportation", "context": "A coordination and visibility gap in everyday campus and city mobility.", "buildScore": 51, "difficulty": "Beginner", "suggestedStack": ["React Native", "Node.js", "Google Maps API", "Socket.io"], "domainTags": ["real-time", "maps", "routing"], "estimatedTimeWeeks": [4, 10], "dataAvailability": "Public dataset exists", "source": "AI-curated"}, {"id": "transportation-36-why-is-real-time-campus-shuttle-tracking", "title": "Why is real-time campus shuttle tracking still absent in most Indian universities?", "category": "Transportation", "context": "A coordination and visibility gap in everyday campus and city mobility.", "buildScore": 64, "difficulty": "Intermediate", "suggestedStack": ["React Native", "Node.js", "Google Maps API", "Socket.io"], "domainTags": ["real-time", "maps", "routing"], "estimatedTimeWeeks": [6, 12], "dataAvailability": "Needs synthetic data", "source": "AI-curated"}, {"id": "food-&-beverage-37-why-cant-hostel-mess-committees-track", "title": "Why can't hostel mess committees track nutritional balance of weekly meal plans?", "category": "Food & Beverage", "context": "An operational blind spot in food service that no one is currently measuring.", "buildScore": 73, "difficulty": "Intermediate", "suggestedStack": ["React", "Node.js", "PostgreSQL", "Chart.js"], "domainTags": ["data-viz", "health-tech", "ops"], "estimatedTimeWeeks": [6, 10], "dataAvailability": "Needs synthetic data", "source": "AI-curated"}, {"id": "food-&-beverage-38-why-is-food-wastage-tracking-for-college", "title": "Why is food-wastage tracking for college canteens still manual and unmeasured?", "category": "Food & Beverage", "context": "An operational blind spot in food service that no one is currently measuring.", "buildScore": 53, "difficulty": "Advanced", "suggestedStack": ["React", "Node.js", "PostgreSQL", "Chart.js"], "domainTags": ["data-viz", "health-tech", "ops"], "estimatedTimeWeeks": [8, 14], "dataAvailability": "Needs field collection", "source": "AI-curated"}, {"id": "hardware-iot-39-why-cant-hostel-students-monitor-room", "title": "Why can't hostel students monitor room electricity usage without installing expensive smart meters?", "category": "Hardware/IoT", "context": "A monitoring gap that's expensive to solve with commercial hardware but tractable with DIY sensors.", "buildScore": 95, "difficulty": "Advanced", "suggestedStack": ["Arduino/ESP32", "React", "MQTT", "InfluxDB"], "domainTags": ["IoT", "sensors", "embedded"], "estimatedTimeWeeks": [8, 14], "dataAvailability": "Needs synthetic data", "source": "AI-curated"}, {"id": "hardware-iot-40-why-is-diy-air-quality-monitoring-for", "title": "Why is DIY air-quality monitoring for classrooms/labs still inaccessible to students?", "category": "Hardware/IoT", "context": "A monitoring gap that's expensive to solve with commercial hardware but tractable with DIY sensors.", "buildScore": 68, "difficulty": "Advanced", "suggestedStack": ["Arduino/ESP32", "React", "MQTT", "InfluxDB"], "domainTags": ["IoT", "sensors", "embedded"], "estimatedTimeWeeks": [8, 12], "dataAvailability": "Needs synthetic data", "source": "AI-curated"}, {"id": "public-safety-41-why-cant-students-report-unsafe-campus", "title": "Why can't students report unsafe campus infrastructure (broken lights, unsafe walkways) with location-tagged proof?", "category": "Public Safety", "context": "A reporting and verification gap that leaves real safety issues undocumented.", "buildScore": 73, "difficulty": "Intermediate", "suggestedStack": ["React Native", "Node.js", "PostgreSQL", "Google Maps API"], "domainTags": ["civic-tech", "safety", "maps"], "estimatedTimeWeeks": [6, 10], "dataAvailability": "Needs field collection", "source": "AI-curated"}, {"id": "public-safety-42-why-is-verified-safety-rating-data-for", "title": "Why is verified safety-rating data for PG accommodations near colleges unavailable?", "category": "Public Safety", "context": "A reporting and verification gap that leaves real safety issues undocumented.", "buildScore": 84, "difficulty": "Beginner", "suggestedStack": ["React Native", "Node.js", "PostgreSQL", "Google Maps API"], "domainTags": ["civic-tech", "safety", "maps"], "estimatedTimeWeeks": [4, 10], "dataAvailability": "Needs synthetic data", "source": "AI-curated"}, {"id": "consumer-services-43-why-cant-small-d2c-sellers-on", "title": "Why can't small D2C sellers on Instagram track order-to-delivery status without a paid SaaS tool?", "category": "Consumer Services", "context": "A verification and trust gap between consumers and local service providers.", "buildScore": 91, "difficulty": "Intermediate", "suggestedStack": ["Next.js", "Supabase", "Stripe", "Tailwind"], "domainTags": ["marketplace", "trust-safety", "reviews"], "estimatedTimeWeeks": [6, 10], "dataAvailability": "Needs field collection", "source": "AI-curated"}, {"id": "environment-44-why-is-comparing-real-electricity-bill-saving", "title": "Why is comparing real electricity-bill savings from rooftop solar still guesswork for homeowners?", "category": "Environment", "context": "A measurement gap that keeps well-intentioned action from turning into verified impact.", "buildScore": 86, "difficulty": "Advanced", "suggestedStack": ["React", "Python", "Chart.js", "PostgreSQL"], "domainTags": ["sensors", "sustainability", "data-viz"], "estimatedTimeWeeks": [8, 14], "dataAvailability": "Needs field collection", "source": "AI-curated"}, {"id": "healthcare-45-why-cant-blood-donors-and-requesters", "title": "Why can't blood donors and requesters in a city match in real time during emergencies?", "category": "Healthcare", "context": "A real gap in preventive and everyday care, especially for people without easy access to specialists.", "buildScore": 65, "difficulty": "Advanced", "suggestedStack": ["React Native", "TensorFlow Lite", "FastAPI", "PostgreSQL"], "domainTags": ["computer-vision", "health-tech", "mobile"], "estimatedTimeWeeks": [8, 14], "dataAvailability": "Needs field collection", "source": "AI-curated"}, {"id": "edtech-46-why-is-tracking-library-book-availability", "title": "Why is tracking library book availability across multiple college libraries still manual?", "category": "EdTech", "context": "A daily friction point for students that most edtech products still treat as an afterthought.", "buildScore": 84, "difficulty": "Beginner", "suggestedStack": ["Next.js", "Whisper API", "Supabase", "Tailwind"], "domainTags": ["nlp", "speech", "education"], "estimatedTimeWeeks": [4, 10], "dataAvailability": "Needs synthetic data", "source": "AI-curated"}, {"id": "accessibility-47-why-cant-visually-impaired-users-get-an", "title": "Why can't visually-impaired users get an audio-first UPI payment confirmation flow?", "category": "Accessibility", "context": "An everyday barrier that assistive tooling still leaves unsolved for a specific group of users.", "buildScore": 94, "difficulty": "Intermediate", "suggestedStack": ["React Native", "Web Speech API", "Firebase", "TypeScript"], "domainTags": ["accessibility", "speech", "nlp"], "estimatedTimeWeeks": [6, 12], "dataAvailability": "Needs synthetic data", "source": "AI-curated"}, {"id": "edtech-48-why-is-scheduling-shared-lab-equipment", "title": "Why is scheduling shared lab equipment across student research groups still done via a physical logbook?", "category": "EdTech", "context": "A daily friction point for students that most edtech products still treat as an afterthought.", "buildScore": 60, "difficulty": "Beginner", "suggestedStack": ["Next.js", "Whisper API", "Supabase", "Tailwind"], "domainTags": ["nlp", "speech", "education"], "estimatedTimeWeeks": [4, 10], "dataAvailability": "Public dataset exists", "source": "AI-curated"}, {"id": "healthcare-49-why-cant-parents-of-young-children", "title": "Why can't parents of young children get a simple, ad-free tool to track developmental milestones?", "category": "Healthcare", "context": "A real gap in preventive and everyday care, especially for people without easy access to specialists.", "buildScore": 66, "difficulty": "Beginner", "suggestedStack": ["React Native", "TensorFlow Lite", "FastAPI", "PostgreSQL"], "domainTags": ["computer-vision", "health-tech", "mobile"], "estimatedTimeWeeks": [4, 10], "dataAvailability": "Needs synthetic data", "source": "AI-curated"}, {"id": "consumer-services-50-why-is-verifying-the-authenticity-of", "title": "Why is verifying the authenticity of a secondhand electronics listing (phone/laptop) still guesswork?", "category": "Consumer Services", "context": "A verification and trust gap between consumers and local service providers.", "buildScore": 91, "difficulty": "Intermediate", "suggestedStack": ["Next.js", "Supabase", "Stripe", "Tailwind"], "domainTags": ["marketplace", "trust-safety", "reviews"], "estimatedTimeWeeks": [6, 12], "dataAvailability": "Public dataset exists", "source": "AI-curated"}, {"id": "logistics-51-why-cant-gig-delivery-workers-get", "title": "Why can't gig delivery workers get a route-optimized multi-order planner offline?", "category": "Logistics", "context": "A coordination problem that large aggregators solve for themselves but never for small players.", "buildScore": 57, "difficulty": "Beginner", "suggestedStack": ["React Native", "Node.js", "Google Maps API", "Redis"], "domainTags": ["routing", "real-time", "maps"], "estimatedTimeWeeks": [4, 8], "dataAvailability": "Needs synthetic data", "source": "AI-curated"}, {"id": "edtech-52-why-is-finding-a-verified-budget", "title": "Why is finding a verified, budget tutor for board-exam subjects still word-of-mouth only?", "category": "EdTech", "context": "A daily friction point for students that most edtech products still treat as an afterthought.", "buildScore": 90, "difficulty": "Beginner", "suggestedStack": ["Next.js", "Whisper API", "Supabase", "Tailwind"], "domainTags": ["nlp", "speech", "education"], "estimatedTimeWeeks": [4, 10], "dataAvailability": "Needs synthetic data", "source": "AI-curated"}, {"id": "consumer-services-53-why-cant-small-event-organizers-get", "title": "Why can't small event organizers get simple check-in/ticketing without expensive SaaS?", "category": "Consumer Services", "context": "A verification and trust gap between consumers and local service providers.", "buildScore": 94, "difficulty": "Intermediate", "suggestedStack": ["Next.js", "Supabase", "Stripe", "Tailwind"], "domainTags": ["marketplace", "trust-safety", "reviews"], "estimatedTimeWeeks": [6, 10], "dataAvailability": "Public dataset exists", "source": "AI-curated"}, {"id": "healthcare-54-why-is-tracking-personal-water-intake", "title": "Why is tracking personal water intake + hydration meaningfully different for outdoor laborers vs office workers unaddressed?", "category": "Healthcare", "context": "A real gap in preventive and everyday care, especially for people without easy access to specialists.", "buildScore": 72, "difficulty": "Beginner", "suggestedStack": ["React Native", "TensorFlow Lite", "FastAPI", "PostgreSQL"], "domainTags": ["computer-vision", "health-tech", "mobile"], "estimatedTimeWeeks": [4, 8], "dataAvailability": "Needs field collection", "source": "AI-curated"}, {"id": "edtech-55-why-cant-students-get-a-structured", "title": "Why can't students get a structured way to prep specifically for GATE/CAT-style problems with adaptive difficulty?", "category": "EdTech", "context": "A daily friction point for students that most edtech products still treat as an afterthought.", "buildScore": 74, "difficulty": "Advanced", "suggestedStack": ["Next.js", "Whisper API", "Supabase", "Tailwind"], "domainTags": ["nlp", "speech", "education"], "estimatedTimeWeeks": [8, 14], "dataAvailability": "Needs synthetic data", "source": "AI-curated"}, {"id": "other-56-why-is-discovering-verified-ngos/volunteering-oppor", "title": "Why is discovering verified NGOs/volunteering opportunities near a student's college still scattered?", "category": "Other", "context": "A coordination problem that's currently solved informally, if at all.", "buildScore": 89, "difficulty": "Advanced", "suggestedStack": ["Next.js", "Node.js", "PostgreSQL", "Tailwind"], "domainTags": ["community", "matching", "web"], "estimatedTimeWeeks": [8, 14], "dataAvailability": "Needs synthetic data", "source": "AI-curated"}, {"id": "public-safety-57-why-cant-apartment-security-guards-log", "title": "Why can't apartment security guards log visitor entries digitally without expensive gated-community software?", "category": "Public Safety", "context": "A reporting and verification gap that leaves real safety issues undocumented.", "buildScore": 93, "difficulty": "Beginner", "suggestedStack": ["React Native", "Node.js", "PostgreSQL", "Google Maps API"], "domainTags": ["civic-tech", "safety", "maps"], "estimatedTimeWeeks": [4, 10], "dataAvailability": "Needs field collection", "source": "AI-curated"}, {"id": "other-58-why-is-tracking-a-lost-item", "title": "Why is tracking a lost item (ID card, wallet) across a large campus still informal WhatsApp posts?", "category": "Other", "context": "A coordination problem that's currently solved informally, if at all.", "buildScore": 45, "difficulty": "Beginner", "suggestedStack": ["Next.js", "Node.js", "PostgreSQL", "Tailwind"], "domainTags": ["community", "matching", "web"], "estimatedTimeWeeks": [4, 8], "dataAvailability": "Needs field collection", "source": "AI-curated"}, {"id": "agriculture-59-why-cant-small-farmers-access-group-buying", "title": "Why can't small farmers access group-buying for seeds/fertilizer to get bulk pricing?", "category": "Agriculture", "context": "A recurring pain point for smallholder farmers who can't afford enterprise agri-tech tooling.", "buildScore": 65, "difficulty": "Advanced", "suggestedStack": ["Flutter", "TensorFlow Lite", "Firebase", "Node.js"], "domainTags": ["computer-vision", "IoT", "agri-tech"], "estimatedTimeWeeks": [8, 12], "dataAvailability": "Needs field collection", "source": "AI-curated"}, {"id": "environment-60-why-is-verifying-whether-a-sustainable", "title": "Why is verifying whether a \"sustainable\" product claim is genuine still opaque to average consumers?", "category": "Environment", "context": "A measurement gap that keeps well-intentioned action from turning into verified impact.", "buildScore": 60, "difficulty": "Beginner", "suggestedStack": ["React", "Python", "Chart.js", "PostgreSQL"], "domainTags": ["sensors", "sustainability", "data-viz"], "estimatedTimeWeeks": [4, 8], "dataAvailability": "Public dataset exists", "source": "AI-curated"}]
+</script>
+
+<script type="module">
+/* ===================== DATA ===================== */
+const PROBLEMS = JSON.parse(document.getElementById('problems-data').textContent);
+
+const CATEGORY_COLORS = {
+  "Healthcare":"#FF6B6B","EdTech":"#4EA8FF","Agriculture":"#8BC34A","FinTech":"#FFC94D",
+  "Logistics":"#FF9F5A","Consumer Services":"#C77DFF","Environment":"#45E0A8","Accessibility":"#5AD1E6",
+  "Governance":"#B0B8FF","Housing":"#F27CB0","Career/Employment":"#FFD166","Transportation":"#6FE7DD",
+  "Food & Beverage":"#FF8C42","Hardware/IoT":"#9D8DF1","Public Safety":"#FF6F91","Other":"#8892A0"
+};
+const DIFF_ORDER = { "Beginner":0, "Intermediate":1, "Advanced":2 };
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ===================== UTIL ===================== */
+const $ = (sel, root=document) => root.querySelector(sel);
+const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+const clamp = (v,min,max) => Math.max(min, Math.min(max, v));
+const lerp = (a,b,t) => a + (b-a)*t;
+const escapeHTML = (s) => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const easeOutCubic = t => 1 - Math.pow(1-t, 3);
+const easeInOutCubic = t => t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3)/2;
+
+function scoreClass(score){ return score >= 75 ? 'high' : score >= 55 ? 'mid' : 'low'; }
+function findProblem(id){ return PROBLEMS.find(p => p.id === id); }
+
+/* ===================== CURSOR (AI drone: trail + shockwave) ===================== */
+const cursorDot = $('#cursorDot');
+if (window.matchMedia('(hover:hover) and (pointer:fine)').matches) {
+  let lastTrail = 0;
+  window.addEventListener('pointermove', e => {
+    cursorDot.style.left = e.clientX + 'px';
+    cursorDot.style.top = e.clientY + 'px';
+    if (!reduceMotion){
+      const now = performance.now();
+      if (now - lastTrail > 40){
+        lastTrail = now;
+        const dot = document.createElement('div');
+        dot.className = 'cursor-trail-dot';
+        dot.style.left = e.clientX + 'px';
+        dot.style.top = e.clientY + 'px';
+        document.body.appendChild(dot);
+        dot.animate([{ opacity:.55, transform:'translate(-50%,-50%) scale(1)' }, { opacity:0, transform:'translate(-50%,-50%) scale(.2)' }], { duration:500, easing:'ease-out' })
+          .onfinish = () => dot.remove();
+      }
+    }
+  });
+  document.addEventListener('pointerover', e => {
+    if (e.target.closest('a, button, .problem-card, input, .deck-card')) cursorDot.classList.add('big');
+    if (e.target.closest('#seed-canvas')) cursorDot.classList.add('over-3d');
+  });
+  document.addEventListener('pointerout', e => {
+    if (e.target.closest('a, button, .problem-card, input, .deck-card')) cursorDot.classList.remove('big');
+    if (e.target.closest('#seed-canvas')) cursorDot.classList.remove('over-3d');
+  });
+  document.addEventListener('pointerdown', e => {
+    if (reduceMotion) return;
+    const ring = document.createElement('div');
+    ring.className = 'cursor-shock';
+    ring.style.left = e.clientX + 'px';
+    ring.style.top = e.clientY + 'px';
+    document.body.appendChild(ring);
+    setTimeout(() => ring.remove(), 650);
+  });
+}
+
+/* ===================== AMBIENT STARFIELD ===================== */
+(function initStarfield(){
+  const canvas = $('#starfield');
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+  function resize(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const count = Math.min(160, Math.floor((canvas.width * canvas.height) / 9000));
+    stars = Array.from({ length: count }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 1.3 + 0.2,
+      s: Math.random() * 0.15 + 0.02,
+      p: Math.random() * Math.PI * 2
+    }));
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  function draw(t){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    stars.forEach(st => {
+      const twinkle = 0.4 + Math.sin(t * 0.001 * st.s * 10 + st.p) * 0.35;
+      ctx.beginPath();
+      ctx.fillStyle = `rgba(160,180,255,${clamp(twinkle,0,1)})`;
+      ctx.arc(st.x, st.y, st.r, 0, Math.PI * 2);
+      ctx.fill();
+      st.y += st.s;
+      if (st.y > canvas.height) st.y = 0;
+    });
+    if (!reduceMotion) requestAnimationFrame(draw);
+  }
+  if (reduceMotion){ draw(0); } else { requestAnimationFrame(draw); }
+})();
+
+/* ===================== LOADER (AI VAULT SEQUENCE) ===================== */
+const loader = $('#loader');
+const loaderFill = $('#loaderFill');
+const loaderCount = $('#loaderCount');
+const loaderStatus = $('#loaderStatus');
+const FILL_MS = 1300;
+const VAULT_STATUSES = ['Scanning problem bank…', 'Compiling categories…', 'Calibrating build scores…', 'Access granted.'];
+let vaultStatusTimer = null;
+
+function cycleVaultStatus(){
+  let i = 0;
+  loaderStatus.textContent = VAULT_STATUSES[0];
+  vaultStatusTimer = setInterval(() => {
+    i = (i + 1) % VAULT_STATUSES.length;
+    loaderStatus.textContent = VAULT_STATUSES[i];
+  }, Math.max(280, FILL_MS / VAULT_STATUSES.length));
+}
+
+function runLoader(){
+  cycleVaultStatus();
+  const start = performance.now();
+  function tick(now){
+    const t = clamp((now - start) / FILL_MS, 0, 1);
+    const eased = easeInOutCubic(t);
+    const pct = Math.round(eased * 100);
+    loaderFill.style.width = pct + '%';
+    loaderCount.textContent = String(pct).padStart(3,'0');
+    if (t < 1) requestAnimationFrame(tick);
+    else finishLoader();
+  }
+  requestAnimationFrame(tick);
+}
+function finishLoader(){
+  if (vaultStatusTimer) clearInterval(vaultStatusTimer);
+  loaderStatus.textContent = VAULT_STATUSES[VAULT_STATUSES.length - 1];
+  loader.classList.add('doors-open');
+  setTimeout(() => {
+    loader.classList.add('exit');
+    document.body.classList.add('loaded');
+    setTimeout(() => { loader.remove(); startScroll(); }, 850);
+  }, reduceMotion ? 0 : 500);
+}
+if (reduceMotion){ loaderFill.style.width='100%'; loaderCount.textContent='100'; finishLoader(); }
+else runLoader();
+
+/* ===================== SCROLL (Lenis) ===================== */
+let lenis = null;
+async function initLenis(){
+  if (reduceMotion) return;
+  try{
+    const { default: Lenis } = await import('lenis');
+    lenis = new Lenis({ smoothWheel:true });
+    lenis.on('scroll', () => { if (window.ScrollTrigger) window.ScrollTrigger.update(); });
+    function raf(t){ lenis.raf(t); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+  }catch(e){ /* fall back to native scroll */ }
+}
+function stopScroll(){
+  if (lenis) lenis.stop();
+  document.documentElement.style.overflow='hidden';
+}
+function startScroll(){
+  if (lenis) lenis.start();
+  document.documentElement.style.overflow='';
+}
+stopScroll();
+initLenis();
+
+/* ===================== REVEAL ON SCROLL ===================== */
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting){
+      entry.target.classList.add('in-view');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.15 });
+function observeReveal(el){ revealObserver.observe(el); }
+$$('.reveal').forEach(observeReveal);
+
+/* ===================== STAT COUNT-UP + HOLOGRAM RINGS ===================== */
+const statObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    statObserver.unobserve(entry.target);
+    const el = entry.target;
+    const target = parseFloat(el.dataset.value || '0');
+    const suffix = el.dataset.suffix || '';
+    const dur = 1200;
+    const start = performance.now();
+    function tick(now){
+      const t = clamp((now-start)/dur, 0, 1);
+      const val = Math.round(easeOutCubic(t) * target);
+      el.textContent = val + suffix;
+      if (t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+
+    const ringItem = el.closest('.stat-ring-item');
+    const arc = ringItem ? ringItem.querySelector('.stat-ring-value-arc') : null;
+    if (arc){
+      const max = parseFloat(arc.dataset.max || '100');
+      const frac = clamp(target / max, 0, 1);
+      requestAnimationFrame(() => { arc.style.strokeDashoffset = String(301.6 * (1 - frac)); });
+    }
+  });
+}, { threshold: 0.4 });
+$$('.stat-number').forEach(el => statObserver.observe(el));
+
+/* ===================== CATEGORY PLANETS (replaces the old marquee) ===================== */
+function triggerWarpFlash(){
+  if (reduceMotion) return;
+  const el = document.createElement('div');
+  el.style.cssText = 'position:fixed;inset:0;z-index:500;background:radial-gradient(circle,rgba(0,229,255,.3),transparent 70%);pointer-events:none;opacity:0;transition:opacity .25s ease;';
+  document.body.appendChild(el);
+  requestAnimationFrame(() => { el.style.opacity = '1'; });
+  setTimeout(() => { el.style.opacity = '0'; setTimeout(() => el.remove(), 300); }, 180);
+}
+function renderPlanets(){
+  const counts = {};
+  PROBLEMS.forEach(p => counts[p.category] = (counts[p.category]||0) + 1);
+  const wrap = $('#planetsWrap');
+  wrap.innerHTML = Object.keys(CATEGORY_COLORS).map((cat, i) => {
+    const color = CATEGORY_COLORS[cat];
+    return `<button class="planet-btn" data-cat="${escapeHTML(cat)}" style="--pc:${color};--pd:${(i % 6) * 0.35}s" aria-label="Explore ${escapeHTML(cat)}">
+      <span class="planet-orb"></span>
+      <span>${escapeHTML(cat)} · ${counts[cat]||0}</span>
+    </button>`;
+  }).join('');
+  wrap.addEventListener('click', e => {
+    const btn = e.target.closest('.planet-btn');
+    if (!btn) return;
+    const cat = btn.dataset.cat;
+    state.categories.clear();
+    state.categories.add(cat);
+    $$('.planet-btn', wrap).forEach(b => b.classList.toggle('active', b === btn));
+    $$('#catFilterRow button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.cat === cat)));
+    renderGrid();
+    triggerWarpFlash();
+    $('#browse').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
+  });
+}
+renderPlanets();
+
+/* ===================== HERO FEATURED CARD ===================== */
+let heroIdx = 0;
+function renderHeroPreview(){
+  const sorted = [...PROBLEMS].sort((a,b) => b.buildScore - a.buildScore);
+  const p = sorted[heroIdx % sorted.length];
+  $('#heroPreviewTitle').textContent = p.title;
+  $('#heroPreviewScore').textContent = p.buildScore;
+  $('#heroPreviewScore').className = 'build-score ' + scoreClass(p.buildScore);
+  $('#heroPreviewMeta').innerHTML = `
+    <span class="chip">${escapeHTML(p.category)}</span>
+    <span class="chip">${escapeHTML(p.difficulty)}</span>
+    <span class="chip">${p.estimatedTimeWeeks[0]}–${p.estimatedTimeWeeks[1]} wks</span>`;
+}
+renderHeroPreview();
+setInterval(() => { heroIdx++; renderHeroPreview(); }, 4200);
+
+/* ===================== BOOKMARKS (window.storage) ===================== */
+const bookmarks = new Set();
+async function loadBookmarks(){
+  try{
+    const res = await window.storage.get('saved-problems');
+    if (res && res.value){
+      const arr = JSON.parse(res.value);
+      arr.forEach(id => bookmarks.add(id));
+    }
+  }catch(e){ /* no saved data yet */ }
+  refreshBookmarkUI();
+}
+async function persistBookmarks(){
+  try{ await window.storage.set('saved-problems', JSON.stringify([...bookmarks])); }
+  catch(e){ /* storage unavailable */ }
+}
+function toggleBookmark(id){
+  if (bookmarks.has(id)) bookmarks.delete(id); else bookmarks.add(id);
+  persistBookmarks();
+  refreshBookmarkUI();
+}
+function refreshBookmarkUI(){
+  $$('[data-bookmark-id]').forEach(el => {
+    el.classList.toggle('active', bookmarks.has(el.dataset.bookmarkId));
+  });
+  if (state.savedOnly) renderGrid();
+}
+loadBookmarks();
+
+/* ===================== BROWSE / FILTERS ===================== */
+const state = { search:'', categories:new Set(), difficulty:null, minScore:0, sort:'score', savedOnly:false };
+
+function renderFilterChips(){
+  const catRow = $('#catFilterRow');
+  catRow.innerHTML = Object.keys(CATEGORY_COLORS).map(cat =>
+    `<button class="chip-toggle" data-cat="${escapeHTML(cat)}" aria-pressed="false">${escapeHTML(cat)}</button>`
+  ).join('');
+  catRow.addEventListener('click', e => {
+    const btn = e.target.closest('button[data-cat]');
+    if (!btn) return;
+    const cat = btn.dataset.cat;
+    if (state.categories.has(cat)) state.categories.delete(cat); else state.categories.add(cat);
+    btn.setAttribute('aria-pressed', state.categories.has(cat));
+    renderGrid();
+  });
+
+  const diffRow = $('#diffFilterRow');
+  ['All','Beginner','Intermediate','Advanced'].forEach(d => {
+    const btn = document.createElement('button');
+    btn.className = 'chip-toggle';
+    btn.textContent = d;
+    btn.dataset.diff = d;
+    btn.setAttribute('aria-pressed', d==='All' ? 'true' : 'false');
+    diffRow.appendChild(btn);
+  });
+  diffRow.addEventListener('click', e => {
+    const btn = e.target.closest('button[data-diff]');
+    if (!btn) return;
+    state.difficulty = btn.dataset.diff === 'All' ? null : btn.dataset.diff;
+    $$('button[data-diff]', diffRow).forEach(b => b.setAttribute('aria-pressed', b === btn));
+    renderGrid();
+  });
+}
+renderFilterChips();
+
+const searchOrbRow = $('#searchOrbRow');
+$('#searchInput').addEventListener('input', e => {
+  state.search = e.target.value.toLowerCase();
+  searchOrbRow.classList.remove('pulsing');
+  void searchOrbRow.offsetWidth; // restart animation
+  searchOrbRow.classList.add('pulsing');
+  applyFilterWithTransition();
+});
+$('#scoreRange').addEventListener('input', e => {
+  state.minScore = parseInt(e.target.value, 10);
+  $('#scoreRangeLabel').textContent = state.minScore;
+  renderGrid();
+});
+$('#sortSelect').addEventListener('change', e => { state.sort = e.target.value; renderGrid(); });
+$('#savedOnlyToggle').addEventListener('click', e => {
+  state.savedOnly = !state.savedOnly;
+  e.target.setAttribute('aria-pressed', state.savedOnly);
+  renderGrid();
+});
+$('#resetFiltersBtn').addEventListener('click', () => {
+  state.search=''; state.categories.clear(); state.difficulty=null; state.minScore=0; state.savedOnly=false;
+  $('#searchInput').value=''; $('#scoreRange').value=0; $('#scoreRangeLabel').textContent='0';
+  $$('#catFilterRow button').forEach(b => b.setAttribute('aria-pressed','false'));
+  $$('#diffFilterRow button').forEach(b => b.setAttribute('aria-pressed', b.dataset.diff==='All'));
+  $('#savedOnlyToggle').setAttribute('aria-pressed','false');
+  renderGrid();
+});
+
+function getFiltered(){
+  let list = PROBLEMS.filter(p => {
+    if (state.savedOnly && !bookmarks.has(p.id)) return false;
+    if (state.categories.size && !state.categories.has(p.category)) return false;
+    if (state.difficulty && p.difficulty !== state.difficulty) return false;
+    if (p.buildScore < state.minScore) return false;
+    if (state.search){
+      const hay = (p.title + ' ' + p.context + ' ' + p.domainTags.join(' ') + ' ' + p.suggestedStack.join(' ')).toLowerCase();
+      if (!hay.includes(state.search)) return false;
+    }
+    return true;
+  });
+  if (state.sort === 'score') list.sort((a,b) => b.buildScore - a.buildScore);
+  else if (state.sort === 'difficulty') list.sort((a,b) => DIFF_ORDER[a.difficulty] - DIFF_ORDER[b.difficulty]);
+  else if (state.sort === 'recent') list.sort((a,b) => b.id.localeCompare(a.id));
+  return list;
+}
+
+function cardHTML(p){
+  const color = CATEGORY_COLORS[p.category];
+  const isSaved = bookmarks.has(p.id);
+  return `
+  <article class="problem-card reveal in-view" data-id="${p.id}" tabindex="0" role="button" aria-label="View ${escapeHTML(p.title)}" style="--dot-color:${color}">
+    <span class="card-orbit-dot"></span>
+    <div class="card-top">
+      <span class="cat-badge" style="color:${color}"><i style="background:${color}"></i>${escapeHTML(p.category)}</span>
+      <button class="bookmark-btn ${isSaved?'active':''}" data-bookmark-id="${p.id}" aria-label="Save problem">
+        <svg class="icon" viewBox="0 0 24 24" fill="${isSaved?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-4.35-9.5-8.5C.5 8.5 3 5 6.5 5c1.9 0 3.3 1 4.5 2.5C12.2 6 13.6 5 15.5 5 19 5 21.5 8.5 20.5 12.5 18 16.65 12 21 12 21z"/></svg>
+      </button>
+    </div>
+    <h3>${escapeHTML(p.title)}</h3>
+    <p class="card-context">${escapeHTML(p.context)}</p>
+    <div class="card-bottom">
+      <span class="build-score ${scoreClass(p.buildScore)}">Score ${p.buildScore}</span>
+      <span class="diff-badge">${escapeHTML(p.difficulty)}</span>
+      <span class="diff-badge">${p.estimatedTimeWeeks[0]}–${p.estimatedTimeWeeks[1]} wks</span>
+    </div>
+  </article>`;
+}
+
+function renderGrid(){
+  const list = getFiltered();
+  const grid = $('#problemGrid');
+  $('#resultCount').textContent = `${list.length} problem${list.length===1?'':'s'}`;
+  if (!list.length){
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">No problems match these filters. <button class="reset-filters" onclick="document.getElementById('resetFiltersBtn').click()">Reset filters</button></div>`;
+    return;
+  }
+  grid.innerHTML = list.map(cardHTML).join('');
+}
+renderGrid();
+
+/* Fades out cards that no longer match before swapping the grid — the "dissolve" the AI Orb search promises */
+function applyFilterWithTransition(){
+  const grid = $('#problemGrid');
+  const newIds = new Set(getFiltered().map(p => p.id));
+  const existing = $$('.problem-card', grid);
+  let anyFade = false;
+  existing.forEach(el => {
+    if (!newIds.has(el.dataset.id)){ el.classList.add('fade-out'); anyFade = true; }
+  });
+  if (anyFade) setTimeout(renderGrid, reduceMotion ? 0 : 220);
+  else renderGrid();
+}
+
+/* 3D tilt + cursor-tracked glow on problem cards (delegated so it survives re-renders) */
+const problemGridEl = $('#problemGrid');
+if (!reduceMotion && window.matchMedia('(hover:hover) and (pointer:fine)').matches){
+  problemGridEl.addEventListener('mousemove', e => {
+    const card = e.target.closest('.problem-card');
+    if (!card) return;
+    const r = card.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width;
+    const py = (e.clientY - r.top) / r.height;
+    const rotY = (px - 0.5) * 10;
+    const rotX = (0.5 - py) * 10;
+    card.style.transform = `translateY(-6px) perspective(700px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+    card.style.setProperty('--mx', (px*100) + '%');
+    card.style.setProperty('--my', (py*100) + '%');
+  });
+  problemGridEl.addEventListener('mouseleave', () => {
+    $$('.problem-card', problemGridEl).forEach(c => { c.style.transform = ''; });
+  }, true);
+}
+
+document.addEventListener('click', e => {
+  const bookmarkBtn = e.target.closest('[data-bookmark-id]');
+  if (bookmarkBtn){
+    e.stopPropagation();
+    toggleBookmark(bookmarkBtn.dataset.bookmarkId);
+    return;
+  }
+  const card = e.target.closest('.problem-card[data-id]');
+  if (card) openModal(card.dataset.id);
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.activeElement && document.activeElement.matches('.problem-card[data-id]')){
+    openModal(document.activeElement.dataset.id);
+  }
+});
+
+/* footer category quick-links */
+$$('.footer-cols a[data-cat]').forEach(a => {
+  a.addEventListener('click', () => {
+    state.categories.clear();
+    state.categories.add(a.dataset.cat);
+    renderFilterChips();
+    $$('#catFilterRow button').forEach(b => b.setAttribute('aria-pressed', b.dataset.cat === a.dataset.cat));
+    renderGrid();
+  });
+});
+
+/* ===================== TOP DECK (swipeable) ===================== */
+let deckOrder = [...PROBLEMS].sort((a,b) => b.buildScore - a.buildScore).slice(0,10).map(p => p.id);
+const deckTotal = deckOrder.length;
+const deckStage = $('#deckStage');
+
+function deckCardHTML(id, rankLabel){
+  const p = findProblem(id);
+  const color = CATEGORY_COLORS[p.category];
+  return `
+  <div class="deck-card" data-id="${p.id}">
+    <div class="deck-flag skip">SKIP</div>
+    <div class="deck-flag save">SAVE</div>
+    <div>
+      <span class="rank">${rankLabel} · <span style="color:${color}">${escapeHTML(p.category)}</span></span>
+      <h3>${escapeHTML(p.title)}</h3>
+      <p>${escapeHTML(p.context)}</p>
+    </div>
+    <div class="deck-footer">
+      <span class="build-score ${scoreClass(p.buildScore)}">Score ${p.buildScore}</span>
+      <span class="diff-badge">${escapeHTML(p.difficulty)}</span>
+    </div>
+  </div>`;
+}
+
+function renderDeck(){
+  if (!deckOrder.length){
+    deckStage.innerHTML = `<div class="deck-empty">You've been through the top 10. <br><button class="pill-btn ghost" id="deckResetBtn" style="margin-top:1rem;">Start over</button></div>`;
+    $('#deckResetBtn')?.addEventListener('click', () => {
+      deckOrder = [...PROBLEMS].sort((a,b) => b.buildScore - a.buildScore).slice(0,10).map(p => p.id);
+      renderDeck();
+    });
+    return;
+  }
+  const visible = deckOrder.slice(0,3);
+  const seenCount = deckTotal - deckOrder.length;
+  deckStage.innerHTML = visible.map((id,i) => deckCardHTML(id, `#${seenCount + i + 1} of ${deckTotal}`)).join('');
+  const cardEls = $$('.deck-card', deckStage);
+  cardEls.forEach((el, i) => {
+    const depth = i; // 0 = top card
+    el.style.zIndex = String(10 - depth);
+    el.style.transform = `translateY(${depth*10}px) scale(${1 - depth*0.045})`;
+    el.style.opacity = depth === 2 ? '.6' : '1';
+    if (depth === 0) attachDrag(el);
+  });
+}
+
+function attachDrag(card){
+  let startX=0, startY=0, dx=0, dragging=false;
+  const skipFlag = $('.deck-flag.skip', card);
+  const saveFlag = $('.deck-flag.save', card);
+
+  function onDown(e){
+    dragging = true;
+    startX = (e.touches ? e.touches[0].clientX : e.clientX);
+    startY = (e.touches ? e.touches[0].clientY : e.clientY);
+    card.style.transition = 'none';
+  }
+  function onMove(e){
+    if (!dragging) return;
+    const cx = (e.touches ? e.touches[0].clientX : e.clientX);
+    const cy = (e.touches ? e.touches[0].clientY : e.clientY);
+    dx = cx - startX;
+    const dy = (cy - startY) * 0.15;
+    const rot = dx * 0.04;
+    card.style.transform = `translate(${dx}px, ${dy}px) rotate(${rot}deg)`;
+    skipFlag.style.opacity = clamp(-dx/80, 0, 1);
+    saveFlag.style.opacity = clamp(dx/80, 0, 1);
+  }
+  function onUp(){
+    if (!dragging) return;
+    dragging = false;
+    card.style.transition = 'transform .4s var(--ease-out), opacity .4s';
+    if (Math.abs(dx) > 110){
+      const dir = dx > 0 ? 1 : -1;
+      card.style.transform = `translate(${dir*900}px, -40px) rotate(${dir*25}deg)`;
+      card.style.opacity = '0';
+      setTimeout(() => {
+        const id = deckOrder.shift();
+        if (dir > 0 && id && !bookmarks.has(id)){
+          bookmarks.add(id);
+          persistBookmarks();
+          refreshBookmarkUI();
+        }
+        deckOrder.push(id);
+        renderDeck();
+      }, 380);
+    } else {
+      card.style.transform = 'translate(0,0) rotate(0)';
+      skipFlag.style.opacity = 0; saveFlag.style.opacity = 0;
+    }
+    dx = 0;
+  }
+  card.addEventListener('pointerdown', onDown);
+  window.addEventListener('pointermove', onMove);
+  window.addEventListener('pointerup', onUp);
+  card.addEventListener('click', (e) => { if (Math.abs(dx) < 4) openModal(card.dataset.id); });
+}
+
+function deckAction(dir){
+  const top = $('.deck-card', deckStage);
+  if (!top) return;
+  top.style.transition = 'transform .4s var(--ease-out), opacity .4s';
+  top.style.transform = `translate(${dir*900}px, -40px) rotate(${dir*25}deg)`;
+  top.style.opacity = '0';
+  setTimeout(() => {
+    const id = deckOrder.shift();
+    if (dir > 0 && id && !bookmarks.has(id)){
+      bookmarks.add(id);
+      persistBookmarks();
+      refreshBookmarkUI();
+    }
+    deckOrder.push(id);
+    renderDeck();
+  }, 380);
+}
+$('#deckSkipBtn').addEventListener('click', () => deckAction(-1));
+$('#deckSaveBtn').addEventListener('click', () => deckAction(1));
+renderDeck();
+
+/* ===================== MODAL ===================== */
+const modalBackdrop = $('#modalBackdrop');
+const modalPanelEl = $('#modalPanel');
+let currentProblemId = null;
+
+// Assign a stagger index to each animated block once, used by the CSS reveal delay
+$$('.modal-panel .stagger-el').forEach((el, i) => el.style.setProperty('--i', i));
+
+function openModal(id){
+  const p = findProblem(id);
+  if (!p) return;
+  currentProblemId = id;
+  const color = CATEGORY_COLORS[p.category];
+  $('#modalCat').innerHTML = `<i style="width:.5rem;height:.5rem;border-radius:999px;display:inline-block;background:${color};margin-right:.4rem;"></i>${escapeHTML(p.category)}`;
+  $('#modalCat').style.color = color;
+  $('#modalTitle').textContent = p.title;
+  $('#modalContext').textContent = p.context;
+  $('#modalScore').textContent = p.buildScore + ' / 100';
+  $('#modalDifficulty').textContent = p.difficulty;
+  $('#modalTime').textContent = `${p.estimatedTimeWeeks[0]}–${p.estimatedTimeWeeks[1]} weeks`;
+  $('#modalData').textContent = p.dataAvailability;
+  $('#modalStack').innerHTML = p.suggestedStack.map(s => `<span class="chip">${escapeHTML(s)}</span>`).join('') +
+    p.domainTags.map(t => `<span class="chip">#${escapeHTML(t)}</span>`).join('');
+  $('#briefSection').classList.add('hidden');
+  $('#briefOutput').innerHTML = '';
+  $('#modalBookmarkBtn').textContent = bookmarks.has(id) ? 'Saved ✓' : 'Save problem';
+  modalPanelEl.classList.remove('revealed');
+  modalBackdrop.classList.add('open');
+  stopScroll();
+  if (reduceMotion){
+    modalPanelEl.classList.add('revealed');
+  } else {
+    modalPanelEl.classList.add('scanning');
+    setTimeout(() => { modalPanelEl.classList.remove('scanning'); modalPanelEl.classList.add('revealed'); }, 550);
+  }
+}
+function closeModal(){
+  modalBackdrop.classList.remove('open');
+  modalPanelEl.classList.remove('revealed', 'scanning');
+  startScroll();
+}
+$('#modalCloseBtn').addEventListener('click', closeModal);
+modalBackdrop.addEventListener('click', e => { if (e.target === modalBackdrop) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape'){ closeModal(); closeNav(); closeBot(); } });
+$('#modalBookmarkBtn').addEventListener('click', () => {
+  if (!currentProblemId) return;
+  toggleBookmark(currentProblemId);
+  $('#modalBookmarkBtn').textContent = bookmarks.has(currentProblemId) ? 'Saved ✓' : 'Save problem';
+});
+
+/* ===================== AI: GENERATE PROJECT BRIEF ===================== */
+function formatBrief(text){
+  const escaped = escapeHTML(text);
+  const lines = escaped.split('\n');
+  let html = ''; let inList = false;
+  for (const raw of lines){
+    const line = raw.trim();
+    if (!line){ if (inList){ html += '</ul>'; inList=false; } continue; }
+    if (/^#{1,4}\s+/.test(line)){
+      if (inList){ html += '</ul>'; inList=false; }
+      html += `<h4>${line.replace(/^#{1,4}\s+/,'')}</h4>`;
+    } else if (/^[-*]\s+/.test(line)){
+      if (!inList){ html += '<ul>'; inList=true; }
+      html += `<li>${line.replace(/^[-*]\s+/,'')}</li>`;
+    } else {
+      if (inList){ html += '</ul>'; inList=false; }
+      html += `<p>${line}</p>`;
+    }
+  }
+  if (inList) html += '</ul>';
+  return html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+}
+
+$('#generateBriefBtn').addEventListener('click', async () => {
+  const p = findProblem(currentProblemId);
+  if (!p) return;
+  const briefSection = $('#briefSection');
+  const briefOutput = $('#briefOutput');
+  briefSection.classList.remove('hidden');
+  briefOutput.style.opacity = '1';
+  briefOutput.innerHTML = `<div class="ai-core-loading"><div class="ai-core-rings"><span></span><span></span><span></span></div><b>AI core powering up — drafting blueprint…</b></div>`;
+
+  const prompt = `You are helping a student turn a problem statement into a starter project brief for a college build.
+
+Problem: "${p.title}"
+Category: ${p.category}
+Context: ${p.context}
+Difficulty: ${p.difficulty}
+Suggested stack: ${p.suggestedStack.join(', ')}
+Time window: ${p.estimatedTimeWeeks[0]}-${p.estimatedTimeWeeks[1]} weeks
+Data availability: ${p.dataAvailability}
+
+Write a compact starter brief with these sections, using short markdown headers (##) and bullet points, no long paragraphs:
+## Problem framing (2-3 sentences)
+## MVP scope (bullets, 4-6 items, genuinely buildable in the time window)
+## Suggested architecture (bullets, 3-5 items)
+## 3 milestones (bullets, one line each)
+## Stretch goals (bullets, 2-3 items)
+
+Keep it grounded, specific to this exact problem, and realistic for a 1-4 person student team. No preamble, start directly with the first header.`;
+
+  try{
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-6",
+        max_tokens: 1000,
+        messages: [{ role: "user", content: prompt }]
+      })
+    });
+    const data = await response.json();
+    const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('\n');
+    briefOutput.style.opacity = '0';
+    setTimeout(() => {
+      briefOutput.innerHTML = formatBrief(text || 'Could not generate a brief right now — try again in a moment.');
+      requestAnimationFrame(() => { briefOutput.style.opacity = '1'; });
+    }, reduceMotion ? 0 : 200);
+  }catch(err){
+    briefOutput.innerHTML = `<p style="color:#FF8A8A;">Couldn't reach the brief generator. Please try again.</p>`;
+  }
+});
+
+/* ===================== ITCH BOT ===================== */
+const botPanel = $('#itchbot-panel');
+const botBody = $('#itchbotBody');
+let botHistory = [];
+let botOpen = false;
+
+function openBot(){ botPanel.classList.add('open'); botOpen = true; $('#itchbotInput').focus(); }
+function closeBot(){ botPanel.classList.remove('open'); botOpen = false; }
+$('#itchbot-launcher').addEventListener('click', () => botOpen ? closeBot() : openBot());
+$('#itchbotCloseBtn').addEventListener('click', closeBot);
+$('#openBotBtnHeader').addEventListener('click', openBot);
+$('#footerBotLink').addEventListener('click', (e) => { e.preventDefault(); openBot(); });
+
+function addMsg(role, text){
+  const div = document.createElement('div');
+  div.className = 'msg ' + (role === 'user' ? 'user' : 'bot');
+  div.textContent = text;
+  botBody.appendChild(div);
+  botBody.scrollTop = botBody.scrollHeight;
+  return div;
+}
+
+function botSystemPrompt(){
+  const compact = PROBLEMS.map(p => ({
+    id:p.id, title:p.title, category:p.category, difficulty:p.difficulty,
+    buildScore:p.buildScore, weeks:p.estimatedTimeWeeks, stack:p.suggestedStack
+  }));
+  return `You are Itch Bot, the recommendation assistant for StudentItch, a bank of real-world student project problem statements.
+You may ONLY recommend problems that appear in this JSON list — never invent new ones:
+${JSON.stringify(compact)}
+
+Rules:
+- Be conversational, concise, and encouraging. Use short paragraphs or a short bulleted list.
+- When recommending, name the exact title of the problem and give a one-line reason it fits.
+- Ask a clarifying question only if you truly can't make a reasonable recommendation without it.
+- If the user describes their skill level, interests, or time available, use it to filter your picks (difficulty, category, weeks, stack).
+- Keep responses under ~120 words unless the user asks for more detail.`;
+}
+
+async function sendBotMessage(text){
+  addMsg('user', text);
+  botHistory.push({ role:'user', content:text });
+  const sendBtn = $('#itchbotSendBtn');
+  const voiceWave = $('#botVoiceWave');
+  sendBtn.disabled = true;
+  voiceWave.classList.remove('hidden');
+  const thinking = addMsg('bot', 'Itch Bot is thinking…');
+  try{
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-6",
+        max_tokens: 500,
+        system: botSystemPrompt(),
+        messages: botHistory.slice(-10)
+      })
+    });
+    const data = await response.json();
+    const reply = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('\n') || "I couldn't come up with a recommendation just now — try rephrasing?";
+    thinking.textContent = reply;
+    botHistory.push({ role:'assistant', content:reply });
+  }catch(err){
+    thinking.textContent = "I couldn't reach the problem bank right now. Please try again.";
+  }finally{
+    sendBtn.disabled = false;
+    voiceWave.classList.add('hidden');
+  }
+}
+
+$('#itchbotForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const input = $('#itchbotInput');
+  const val = input.value.trim();
+  if (!val) return;
+  input.value = '';
+  sendBotMessage(val);
+});
+
+/* ===================== NAV OVERLAY ===================== */
+const navOverlay = $('#nav-overlay');
+function openNav(){ navOverlay.classList.add('open'); stopScroll(); $('#menuOpenBtn').setAttribute('aria-expanded','true'); }
+function closeNav(){ navOverlay.classList.remove('open'); startScroll(); $('#menuOpenBtn').setAttribute('aria-expanded','false'); }
+$('#menuOpenBtn').addEventListener('click', openNav);
+$('#menuCloseBtn').addEventListener('click', closeNav);
+$$('.nav-overlay-list button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    closeNav();
+    const target = document.querySelector(btn.dataset.target);
+    if (target) target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
+  });
+});
+$('#submitProblemBtn').addEventListener('click', openBot);
+
+/* ===================== THREE.JS HERO SCENE ===================== */
+async function initScene(){
+  let THREE;
+  try{ THREE = await import('three'); } catch(e){ return; }
+
+  const canvas = $('#seed-canvas');
+  const isMobile = window.innerWidth < 768;
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 100);
+  camera.position.set(0, 0, 6);
+
+  const ambient = new THREE.AmbientLight(0x8888aa, 0.5);
+  const key = new THREE.DirectionalLight(0xffffff, 0.6);
+  key.position.set(3, 4, 5);
+  const violetLight = new THREE.PointLight(0x6E5BFF, 6, 12);
+  violetLight.position.set(-3, 1.5, 2);
+  const cyanLight = new THREE.PointLight(0x00E5FF, 6, 12);
+  cyanLight.position.set(3, -1.5, 2);
+  scene.add(ambient, key, violetLight, cyanLight);
+
+  // ===== THE IDEA CORE: an outer crystal shell around a glowing inner core =====
+  const geo = new THREE.IcosahedronGeometry(1.5, 1);
+  const mat = new THREE.MeshStandardMaterial({
+    color: 0x14141f, metalness: 0.35, roughness: 0.25, transparent:true,
+    emissive: new THREE.Color(0x6E5BFF), emissiveIntensity: 0.18, flatShading: true
+  });
+  const seed = new THREE.Mesh(geo, mat);
+  scene.add(seed);
+
+  const edgeGeo = new THREE.EdgesGeometry(geo);
+  const edgeMat = new THREE.LineBasicMaterial({ color: 0x00E5FF, transparent:true, opacity:0.5 });
+  const wire = new THREE.LineSegments(edgeGeo, edgeMat);
+  wire.scale.setScalar(1.01);
+  seed.add(wire);
+
+  const coreGeo = new THREE.IcosahedronGeometry(0.6, 0);
+  const coreMat = new THREE.MeshStandardMaterial({
+    color: 0x0a0a14, emissive: new THREE.Color(0x00E5FF), emissiveIntensity: 0.4, flatShading:true
+  });
+  const innerCore = new THREE.Mesh(coreGeo, coreMat);
+  seed.add(innerCore);
+
+  // ===== particle field: every glowing dot is one problem in the bank =====
+  const particleCount = isMobile ? 180 : 500;
+  const baseRadii = new Float32Array(particleCount);
+  const baseDirs = [];
+  const positions = new Float32Array(particleCount * 3);
+  for (let i=0; i<particleCount; i++){
+    const r = 3.5 + Math.random()*4;
+    const theta = Math.random()*Math.PI*2;
+    const phi = Math.acos((Math.random()*2)-1);
+    const dx = Math.sin(phi)*Math.cos(theta), dy = Math.sin(phi)*Math.sin(theta), dz = Math.cos(phi);
+    baseRadii[i] = r;
+    baseDirs.push(dx, dy, dz);
+    positions[i*3] = dx*r; positions[i*3+1] = dy*r; positions[i*3+2] = dz*r;
+  }
+  const particleGeo = new THREE.BufferGeometry();
+  particleGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  const particleMat = new THREE.PointsMaterial({ color:0x9d8dff, size:0.03, transparent:true, opacity:0.55, blending:THREE.AdditiveBlending, depthWrite:false });
+  const particles = new THREE.Points(particleGeo, particleMat);
+  scene.add(particles);
+  const posAttr = particleGeo.getAttribute('position');
+
+  // ===== optional real bloom (falls back to plain rendering if the addon fails to load) =====
+  let composer = null;
+  try{
+    const [{ EffectComposer }, { RenderPass }, { UnrealBloomPass }] = await Promise.all([
+      import('three/addons/postprocessing/EffectComposer.js'),
+      import('three/addons/postprocessing/RenderPass.js'),
+      import('three/addons/postprocessing/UnrealBloomPass.js')
+    ]);
+    composer = new EffectComposer(renderer);
+    composer.addPass(new RenderPass(scene, camera));
+    const bloom = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 0.85, 0.4, 0.15);
+    composer.addPass(bloom);
+    composer.setSize(window.innerWidth, window.innerHeight);
+  }catch(e){ composer = null; }
+
+  let pointerX = 0, pointerY = 0;
+  window.addEventListener('pointermove', e => {
+    pointerX = (e.clientX / window.innerWidth - 0.5) * 2;
+    pointerY = (e.clientY / window.innerHeight - 0.5) * 2;
+  });
+
+  // ===== scroll-tied narrative: awaken -> crack -> particles fly outward -> fade into the planets below =====
+  const heroEl = $('#home');
+  function scrollProgressFallback(){
+    const rect = heroEl.getBoundingClientRect();
+    const total = heroEl.offsetHeight;
+    const passed = clamp(-rect.top, 0, total);
+    return clamp(passed / total, 0, 1);
+  }
+  let heroT = 0;
+  let usingScrollTrigger = false;
+  if (window.gsap && window.ScrollTrigger && !reduceMotion){
+    try{
+      gsap.registerPlugin(ScrollTrigger);
+      ScrollTrigger.create({
+        trigger: '#home', start: 'top top', end: 'bottom top', scrub: 0.3,
+        onUpdate: self => { heroT = self.progress; }
+      });
+      usingScrollTrigger = true;
+    }catch(e){ usingScrollTrigger = false; }
+  }
+
+  const clock = new THREE.Clock();
+  function animate(){
+    const delta = clock.getDelta();
+    const elapsed = clock.getElapsedTime();
+    const progress = usingScrollTrigger ? heroT : scrollProgressFallback();
+
+    seed.rotation.y += delta * 0.18;
+    seed.rotation.x += delta * 0.05;
+    particles.rotation.y += delta * 0.015;
+    innerCore.rotation.y -= delta * 0.3;
+
+    const wake = clamp(progress * 2.2, 0, 1);
+    // the shell cracks open: it fades toward transparent while the inner core burns brighter
+    mat.opacity = lerp(1, 0.3, wake);
+    mat.emissiveIntensity = 0.16 + Math.sin(elapsed * 1.1) * 0.05 + wake * 0.35;
+    coreMat.emissiveIntensity = 0.4 + wake * 1.6;
+    wire.material.opacity = 0.5 + wake * 0.4;
+    const targetScale = 1 + wake * 0.22;
+    seed.scale.setScalar(lerp(seed.scale.x, targetScale, 0.06));
+
+    // particles explode radially outward as the core cracks open
+    const spread = 1 + wake * 1.8;
+    for (let i=0; i<particleCount; i++){
+      const r = baseRadii[i] * spread;
+      posAttr.array[i*3]   = baseDirs[i*3]   * r;
+      posAttr.array[i*3+1] = baseDirs[i*3+1] * r;
+      posAttr.array[i*3+2] = baseDirs[i*3+2] * r;
+    }
+    posAttr.needsUpdate = true;
+    particleMat.opacity = lerp(0.55, 0.12, wake);
+
+    camera.position.x = lerp(camera.position.x, pointerX * 0.35, 0.04);
+    camera.position.y = lerp(camera.position.y, -pointerY * 0.25, 0.04);
+    camera.position.z = lerp(camera.position.z, 6 - progress*1.6, 0.04);
+    camera.lookAt(0,0,0);
+
+    const opacity = clamp(1 - (progress - 0.85) / 0.4, 0.08, 1);
+    canvas.style.opacity = String(opacity);
+
+    if (composer) composer.render(); else renderer.render(scene, camera);
+    requestAnimationFrame(animate);
+  }
+
+  if (reduceMotion){
+    if (composer) composer.render(); else renderer.render(scene, camera);
+  } else {
+    animate();
+  }
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    if (composer) composer.setSize(window.innerWidth, window.innerHeight);
+  });
+}
+initScene();
+
+</script>
+</body>
+</html>
