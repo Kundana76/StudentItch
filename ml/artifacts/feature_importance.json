@@ -1,0 +1,30 @@
+[
+  {
+    "feature":"avg_weeks",
+    "importance":0.1138870973
+  },
+  {
+    "feature":"difficulty",
+    "importance":0.0539226483
+  },
+  {
+    "feature":"week_span",
+    "importance":0.0198225701
+  },
+  {
+    "feature":"category",
+    "importance":0.0031845468
+  },
+  {
+    "feature":"dataAvailability",
+    "importance":0.0000357729
+  },
+  {
+    "feature":"num_domain_tags",
+    "importance":0.0
+  },
+  {
+    "feature":"num_stack_items",
+    "importance":0.0
+  }
+]

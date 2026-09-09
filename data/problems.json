@@ -1,0 +1,1502 @@
+[
+  {
+    "id": "healthcare-01-why-cant-rural-patients-get-a",
+    "title": "Why can't rural patients get a preliminary skin-condition assessment without traveling to a dermatologist?",
+    "category": "Healthcare",
+    "context": "A real gap in preventive and everyday care, especially for people without easy access to specialists.",
+    "buildScore": 76,
+    "difficulty": "Intermediate",
+    "suggestedStack": [
+      "React Native",
+      "TensorFlow Lite",
+      "FastAPI",
+      "PostgreSQL"
+    ],
+    "domainTags": [
+      "computer-vision",
+      "health-tech",
+      "mobile"
+    ],
+    "estimatedTimeWeeks": [
+      6,
+      10
+    ],
+    "dataAvailability": "Needs field collection",
+    "source": "AI-curated"
+  },
+  {
+    "id": "healthcare-02-why-is-there-no-simple-app",
+    "title": "Why is there no simple app to track medication adherence for elderly patients living alone?",
+    "category": "Healthcare",
+    "context": "A real gap in preventive and everyday care, especially for people without easy access to specialists.",
+    "buildScore": 69,
+    "difficulty": "Beginner",
+    "suggestedStack": [
+      "React Native",
+      "TensorFlow Lite",
+      "FastAPI",
+      "PostgreSQL"
+    ],
+    "domainTags": [
+      "computer-vision",
+      "health-tech",
+      "mobile"
+    ],
+    "estimatedTimeWeeks": [
+      4,
+      10
+    ],
+    "dataAvailability": "Public dataset exists",
+    "source": "AI-curated"
+  },
+  {
+    "id": "healthcare-03-why-cant-students-self-screen-for-early",
+    "title": "Why can't students self-screen for early signs of eye strain from long screen time?",
+    "category": "Healthcare",
+    "context": "A real gap in preventive and everyday care, especially for people without easy access to specialists.",
+    "buildScore": 81,
+    "difficulty": "Beginner",
+    "suggestedStack": [
+      "React Native",
+      "TensorFlow Lite",
+      "FastAPI",
+      "PostgreSQL"
+    ],
+    "domainTags": [
+      "computer-vision",
+      "health-tech",
+      "mobile"
+    ],
+    "estimatedTimeWeeks": [
+      4,
+      8
+    ],
+    "dataAvailability": "Needs field collection",
+    "source": "AI-curated"
+  },
+  {
+    "id": "healthcare-04-why-is-mental-health-first-aid-training-inacce",
+    "title": "Why is mental-health first-aid training inaccessible to college students in tier-2/3 cities?",
+    "category": "Healthcare",
+    "context": "A real gap in preventive and everyday care, especially for people without easy access to specialists.",
+    "buildScore": 92,
+    "difficulty": "Advanced",
+    "suggestedStack": [
+      "React Native",
+      "TensorFlow Lite",
+      "FastAPI",
+      "PostgreSQL"
+    ],
+    "domainTags": [
+      "computer-vision",
+      "health-tech",
+      "mobile"
+    ],
+    "estimatedTimeWeeks": [
+      8,
+      14
+    ],
+    "dataAvailability": "Needs field collection",
+    "source": "AI-curated"
+  },
+  {
+    "id": "healthcare-05-why-cant-diabetic-patients-get-an",
+    "title": "Why can't diabetic patients get an easy photo-based meal glycemic-index estimate?",
+    "category": "Healthcare",
+    "context": "A real gap in preventive and everyday care, especially for people without easy access to specialists.",
+    "buildScore": 86,
+    "difficulty": "Advanced",
+    "suggestedStack": [
+      "React Native",
+      "TensorFlow Lite",
+      "FastAPI",
+      "PostgreSQL"
+    ],
+    "domainTags": [
+      "computer-vision",
+      "health-tech",
+      "mobile"
+    ],
+    "estimatedTimeWeeks": [
+      8,
+      12
+    ],
+    "dataAvailability": "Needs synthetic data",
+    "source": "AI-curated"
+  },
+  {
+    "id": "edtech-06-why-do-first-generation-college-students-lack",
+    "title": "Why do first-generation college students lack a structured way to navigate scholarship applications?",
+    "category": "EdTech",
+    "context": "A daily friction point for students that most edtech products still treat as an afterthought.",
+    "buildScore": 82,
+    "difficulty": "Intermediate",
+    "suggestedStack": [
+      "Next.js",
+      "Whisper API",
+      "Supabase",
+      "Tailwind"
+    ],
+    "domainTags": [
+      "nlp",
+      "speech",
+      "education"
+    ],
+    "estimatedTimeWeeks": [
+      6,
+      12
+    ],
+    "dataAvailability": "Needs field collection",
+    "source": "AI-curated"
+  },
+  {
+    "id": "edtech-07-why-is-there-no-adaptive-practice",
+    "title": "Why is there no adaptive practice tool for regional-language board exam students?",
+    "category": "EdTech",
+    "context": "A daily friction point for students that most edtech products still treat as an afterthought.",
+    "buildScore": 54,
+    "difficulty": "Beginner",
+    "suggestedStack": [
+      "Next.js",
+      "Whisper API",
+      "Supabase",
+      "Tailwind"
+    ],
+    "domainTags": [
+      "nlp",
+      "speech",
+      "education"
+    ],
+    "estimatedTimeWeeks": [
+      4,
+      10
+    ],
+    "dataAvailability": "Needs synthetic data",
+    "source": "AI-curated"
+  },
+  {
+    "id": "edtech-08-why-cant-students-get-instant-feedback",
+    "title": "Why can't students get instant feedback on spoken English pronunciation for placement interviews?",
+    "category": "EdTech",
+    "context": "A daily friction point for students that most edtech products still treat as an afterthought.",
+    "buildScore": 56,
+    "difficulty": "Advanced",
+    "suggestedStack": [
+      "Next.js",
+      "Whisper API",
+      "Supabase",
+      "Tailwind"
+    ],
+    "domainTags": [
+      "nlp",
+      "speech",
+      "education"
+    ],
+    "estimatedTimeWeeks": [
+      8,
+      14
+    ],
+    "dataAvailability": "Public dataset exists",
+    "source": "AI-curated"
+  },
+  {
+    "id": "edtech-09-why-is-peer-to-peer-doubt-solving-for-engineering",
+    "title": "Why is peer-to-peer doubt-solving for engineering subjects still scattered across WhatsApp groups?",
+    "category": "EdTech",
+    "context": "A daily friction point for students that most edtech products still treat as an afterthought.",
+    "buildScore": 54,
+    "difficulty": "Beginner",
+    "suggestedStack": [
+      "Next.js",
+      "Whisper API",
+      "Supabase",
+      "Tailwind"
+    ],
+    "domainTags": [
+      "nlp",
+      "speech",
+      "education"
+    ],
+    "estimatedTimeWeeks": [
+      4,
+      8
+    ],
+    "dataAvailability": "Needs synthetic data",
+    "source": "AI-curated"
+  },
+  {
+    "id": "edtech-10-why-cant-visually-impaired-students-easily",
+    "title": "Why can't visually impaired students easily convert textbook diagrams into audio descriptions?",
+    "category": "EdTech",
+    "context": "A daily friction point for students that most edtech products still treat as an afterthought.",
+    "buildScore": 78,
+    "difficulty": "Beginner",
+    "suggestedStack": [
+      "Next.js",
+      "Whisper API",
+      "Supabase",
+      "Tailwind"
+    ],
+    "domainTags": [
+      "nlp",
+      "speech",
+      "education"
+    ],
+    "estimatedTimeWeeks": [
+      4,
+      8
+    ],
+    "dataAvailability": "Public dataset exists",
+    "source": "AI-curated"
+  },
+  {
+    "id": "agriculture-11-why-cant-small-farmers-get-an",
+    "title": "Why can't small farmers get an offline-capable crop-disease diagnosis from a phone photo?",
+    "category": "Agriculture",
+    "context": "A recurring pain point for smallholder farmers who can't afford enterprise agri-tech tooling.",
+    "buildScore": 49,
+    "difficulty": "Intermediate",
+    "suggestedStack": [
+      "Flutter",
+      "TensorFlow Lite",
+      "Firebase",
+      "Node.js"
+    ],
+    "domainTags": [
+      "computer-vision",
+      "IoT",
+      "agri-tech"
+    ],
+    "estimatedTimeWeeks": [
+      6,
+      12
+    ],
+    "dataAvailability": "Needs field collection",
+    "source": "AI-curated"
+  },
+  {
+    "id": "agriculture-12-why-is-there-no-simple-tool",
+    "title": "Why is there no simple tool to predict optimal harvest timing using local weather + soil data?",
+    "category": "Agriculture",
+    "context": "A recurring pain point for smallholder farmers who can't afford enterprise agri-tech tooling.",
+    "buildScore": 79,
+    "difficulty": "Intermediate",
+    "suggestedStack": [
+      "Flutter",
+      "TensorFlow Lite",
+      "Firebase",
+      "Node.js"
+    ],
+    "domainTags": [
+      "computer-vision",
+      "IoT",
+      "agri-tech"
+    ],
+    "estimatedTimeWeeks": [
+      6,
+      10
+    ],
+    "dataAvailability": "Needs field collection",
+    "source": "AI-curated"
+  },
+  {
+    "id": "agriculture-13-why-cant-farmers-verify-fair-mandi",
+    "title": "Why can't farmers verify fair mandi (market) prices in real time before selling produce?",
+    "category": "Agriculture",
+    "context": "A recurring pain point for smallholder farmers who can't afford enterprise agri-tech tooling.",
+    "buildScore": 83,
+    "difficulty": "Advanced",
+    "suggestedStack": [
+      "Flutter",
+      "TensorFlow Lite",
+      "Firebase",
+      "Node.js"
+    ],
+    "domainTags": [
+      "computer-vision",
+      "IoT",
+      "agri-tech"
+    ],
+    "estimatedTimeWeeks": [
+      8,
+      12
+    ],
+    "dataAvailability": "Needs field collection",
+    "source": "AI-curated"
+  },
+  {
+    "id": "agriculture-14-why-is-water-usage-tracking-for-drip",
+    "title": "Why is water-usage tracking for drip irrigation inaccessible to smallholder farmers?",
+    "category": "Agriculture",
+    "context": "A recurring pain point for smallholder farmers who can't afford enterprise agri-tech tooling.",
+    "buildScore": 95,
+    "difficulty": "Advanced",
+    "suggestedStack": [
+      "Flutter",
+      "TensorFlow Lite",
+      "Firebase",
+      "Node.js"
+    ],
+    "domainTags": [
+      "computer-vision",
+      "IoT",
+      "agri-tech"
+    ],
+    "estimatedTimeWeeks": [
+      8,
+      12
+    ],
+    "dataAvailability": "Needs field collection",
+    "source": "AI-curated"
+  },
+  {
+    "id": "fintech-15-why-cant-gig-workers-get-a",
+    "title": "Why can't gig workers get a simple, visual breakdown of their fluctuating monthly income for loan eligibility?",
+    "category": "FinTech",
+    "context": "A trust and clarity gap in everyday money management that underserved users face constantly.",
+    "buildScore": 82,
+    "difficulty": "Intermediate",
+    "suggestedStack": [
+      "React",
+      "Node.js",
+      "PostgreSQL",
+      "Chart.js"
+    ],
+    "domainTags": [
+      "fintech",
+      "data-viz",
+      "OCR"
+    ],
+    "estimatedTimeWeeks": [
+      6,
+      10
+    ],
+    "dataAvailability": "Needs field collection",
+    "source": "AI-curated"
+  },
+  {
+    "id": "fintech-16-why-is-there-no-beginner-friendly-tool",
+    "title": "Why is there no beginner-friendly tool that explains a person's credit score in plain language with actionable steps?",
+    "category": "FinTech",
+    "context": "A trust and clarity gap in everyday money management that underserved users face constantly.",
+    "buildScore": 88,
+    "difficulty": "Intermediate",
+    "suggestedStack": [
+      "React",
+      "Node.js",
+      "PostgreSQL",
+      "Chart.js"
+    ],
+    "domainTags": [
+      "fintech",
+      "data-viz",
+      "OCR"
+    ],
+    "estimatedTimeWeeks": [
+      6,
+      12
+    ],
+    "dataAvailability": "Needs synthetic data",
+    "source": "AI-curated"
+  },
+  {
+    "id": "fintech-17-why-cant-small-shopkeepers-reconcile-daily",
+    "title": "Why can't small shopkeepers reconcile daily UPI + cash transactions without manual bookkeeping?",
+    "category": "FinTech",
+    "context": "A trust and clarity gap in everyday money management that underserved users face constantly.",
+    "buildScore": 56,
+    "difficulty": "Advanced",
+    "suggestedStack": [
+      "React",
+      "Node.js",
+      "PostgreSQL",
+      "Chart.js"
+    ],
+    "domainTags": [
+      "fintech",
+      "data-viz",
+      "OCR"
+    ],
+    "estimatedTimeWeeks": [
+      8,
+      14
+    ],
+    "dataAvailability": "Public dataset exists",
+    "source": "AI-curated"
+  },
+  {
+    "id": "fintech-18-why-do-students-lack-a-simple",
+    "title": "Why do students lack a simple expense-splitting + budgeting tool tailored to hostel/PG life?",
+    "category": "FinTech",
+    "context": "A trust and clarity gap in everyday money management that underserved users face constantly.",
+    "buildScore": 94,
+    "difficulty": "Intermediate",
+    "suggestedStack": [
+      "React",
+      "Node.js",
+      "PostgreSQL",
+      "Chart.js"
+    ],
+    "domainTags": [
+      "fintech",
+      "data-viz",
+      "OCR"
+    ],
+    "estimatedTimeWeeks": [
+      6,
+      12
+    ],
+    "dataAvailability": "Public dataset exists",
+    "source": "AI-curated"
+  },
+  {
+    "id": "logistics-19-why-cant-local-kirana-stores-get",
+    "title": "Why can't local kirana stores get real-time delivery-partner availability without a large aggregator?",
+    "category": "Logistics",
+    "context": "A coordination problem that large aggregators solve for themselves but never for small players.",
+    "buildScore": 56,
+    "difficulty": "Advanced",
+    "suggestedStack": [
+      "React Native",
+      "Node.js",
+      "Google Maps API",
+      "Redis"
+    ],
+    "domainTags": [
+      "routing",
+      "real-time",
+      "maps"
+    ],
+    "estimatedTimeWeeks": [
+      8,
+      12
+    ],
+    "dataAvailability": "Needs synthetic data",
+    "source": "AI-curated"
+  },
+  {
+    "id": "logistics-20-why-is-last-mile-delivery-tracking-for",
+    "title": "Why is last-mile delivery tracking for college food-delivery collectives still manual?",
+    "category": "Logistics",
+    "context": "A coordination problem that large aggregators solve for themselves but never for small players.",
+    "buildScore": 84,
+    "difficulty": "Beginner",
+    "suggestedStack": [
+      "React Native",
+      "Node.js",
+      "Google Maps API",
+      "Redis"
+    ],
+    "domainTags": [
+      "routing",
+      "real-time",
+      "maps"
+    ],
+    "estimatedTimeWeeks": [
+      4,
+      8
+    ],
+    "dataAvailability": "Needs synthetic data",
+    "source": "AI-curated"
+  },
+  {
+    "id": "consumer-services-21-why-cant-consumers-verify-a-service",
+    "title": "Why can't consumers verify a service professional's (electrician/plumber) actual completed-job history?",
+    "category": "Consumer Services",
+    "context": "A verification and trust gap between consumers and local service providers.",
+    "buildScore": 87,
+    "difficulty": "Beginner",
+    "suggestedStack": [
+      "Next.js",
+      "Supabase",
+      "Stripe",
+      "Tailwind"
+    ],
+    "domainTags": [
+      "marketplace",
+      "trust-safety",
+      "reviews"
+    ],
+    "estimatedTimeWeeks": [
+      4,
+      10
+    ],
+    "dataAvailability": "Public dataset exists",
+    "source": "AI-curated"
+  },
+  {
+    "id": "consumer-services-22-why-is-there-no-reliable-way",
+    "title": "Why is there no reliable way to estimate real repair costs before an appliance technician visits?",
+    "category": "Consumer Services",
+    "context": "A verification and trust gap between consumers and local service providers.",
+    "buildScore": 51,
+    "difficulty": "Beginner",
+    "suggestedStack": [
+      "Next.js",
+      "Supabase",
+      "Stripe",
+      "Tailwind"
+    ],
+    "domainTags": [
+      "marketplace",
+      "trust-safety",
+      "reviews"
+    ],
+    "estimatedTimeWeeks": [
+      4,
+      8
+    ],
+    "dataAvailability": "Needs field collection",
+    "source": "AI-curated"
+  },
+  {
+    "id": "environment-23-why-cant-residents-easily-report-and",
+    "title": "Why can't residents easily report and track resolution of local waste-dumping hotspots?",
+    "category": "Environment",
+    "context": "A measurement gap that keeps well-intentioned action from turning into verified impact.",
+    "buildScore": 48,
+    "difficulty": "Beginner",
+    "suggestedStack": [
+      "React",
+      "Python",
+      "Chart.js",
+      "PostgreSQL"
+    ],
+    "domainTags": [
+      "sensors",
+      "sustainability",
+      "data-viz"
+    ],
+    "estimatedTimeWeeks": [
+      4,
+      10
+    ],
+    "dataAvailability": "Public dataset exists",
+    "source": "AI-curated"
+  },
+  {
+    "id": "environment-24-why-is-household-water-quality-testing-inacce",
+    "title": "Why is household water-quality testing inaccessible without expensive lab visits?",
+    "category": "Environment",
+    "context": "A measurement gap that keeps well-intentioned action from turning into verified impact.",
+    "buildScore": 85,
+    "difficulty": "Intermediate",
+    "suggestedStack": [
+      "React",
+      "Python",
+      "Chart.js",
+      "PostgreSQL"
+    ],
+    "domainTags": [
+      "sensors",
+      "sustainability",
+      "data-viz"
+    ],
+    "estimatedTimeWeeks": [
+      6,
+      10
+    ],
+    "dataAvailability": "Needs synthetic data",
+    "source": "AI-curated"
+  },
+  {
+    "id": "environment-25-why-cant-apartment-communities-track-and",
+    "title": "Why can't apartment communities track and gamify their collective carbon footprint reduction?",
+    "category": "Environment",
+    "context": "A measurement gap that keeps well-intentioned action from turning into verified impact.",
+    "buildScore": 71,
+    "difficulty": "Advanced",
+    "suggestedStack": [
+      "React",
+      "Python",
+      "Chart.js",
+      "PostgreSQL"
+    ],
+    "domainTags": [
+      "sensors",
+      "sustainability",
+      "data-viz"
+    ],
+    "estimatedTimeWeeks": [
+      8,
+      12
+    ],
+    "dataAvailability": "Needs field collection",
+    "source": "AI-curated"
+  },
+  {
+    "id": "accessibility-26-why-is-campus-navigation-for-wheelchair",
+    "title": "Why is campus navigation for wheelchair users still dependent on asking people rather than mapped data?",
+    "category": "Accessibility",
+    "context": "An everyday barrier that assistive tooling still leaves unsolved for a specific group of users.",
+    "buildScore": 51,
+    "difficulty": "Beginner",
+    "suggestedStack": [
+      "React Native",
+      "Web Speech API",
+      "Firebase",
+      "TypeScript"
+    ],
+    "domainTags": [
+      "accessibility",
+      "speech",
+      "nlp"
+    ],
+    "estimatedTimeWeeks": [
+      4,
+      8
+    ],
+    "dataAvailability": "Public dataset exists",
+    "source": "AI-curated"
+  },
+  {
+    "id": "accessibility-27-why-cant-hearing-impaired-students-get-real",
+    "title": "Why can't hearing-impaired students get real-time captioning for offline classroom lectures?",
+    "category": "Accessibility",
+    "context": "An everyday barrier that assistive tooling still leaves unsolved for a specific group of users.",
+    "buildScore": 82,
+    "difficulty": "Intermediate",
+    "suggestedStack": [
+      "React Native",
+      "Web Speech API",
+      "Firebase",
+      "TypeScript"
+    ],
+    "domainTags": [
+      "accessibility",
+      "speech",
+      "nlp"
+    ],
+    "estimatedTimeWeeks": [
+      6,
+      12
+    ],
+    "dataAvailability": "Public dataset exists",
+    "source": "AI-curated"
+  },
+  {
+    "id": "governance-28-why-is-tracking-the-status-of",
+    "title": "Why is tracking the status of a filed RTI (Right to Information) request still opaque and manual?",
+    "category": "Governance",
+    "context": "A transparency gap between citizens and the systems meant to serve them.",
+    "buildScore": 59,
+    "difficulty": "Advanced",
+    "suggestedStack": [
+      "Next.js",
+      "PostgreSQL",
+      "Puppeteer",
+      "Tailwind"
+    ],
+    "domainTags": [
+      "civic-tech",
+      "scraping",
+      "govtech"
+    ],
+    "estimatedTimeWeeks": [
+      8,
+      12
+    ],
+    "dataAvailability": "Needs synthetic data",
+    "source": "AI-curated"
+  },
+  {
+    "id": "governance-29-why-cant-citizens-easily-find-which",
+    "title": "Why can't citizens easily find which local government scheme they're eligible for?",
+    "category": "Governance",
+    "context": "A transparency gap between citizens and the systems meant to serve them.",
+    "buildScore": 92,
+    "difficulty": "Advanced",
+    "suggestedStack": [
+      "Next.js",
+      "PostgreSQL",
+      "Puppeteer",
+      "Tailwind"
+    ],
+    "domainTags": [
+      "civic-tech",
+      "scraping",
+      "govtech"
+    ],
+    "estimatedTimeWeeks": [
+      8,
+      12
+    ],
+    "dataAvailability": "Public dataset exists",
+    "source": "AI-curated"
+  },
+  {
+    "id": "housing-30-why-cant-renters-access-a-verified",
+    "title": "Why can't renters access a verified checklist of common hidden issues before signing a lease?",
+    "category": "Housing",
+    "context": "A recurring friction point in renting and shared-living that's handled informally today.",
+    "buildScore": 64,
+    "difficulty": "Intermediate",
+    "suggestedStack": [
+      "React",
+      "Node.js",
+      "MongoDB",
+      "Tailwind"
+    ],
+    "domainTags": [
+      "marketplace",
+      "fintech",
+      "housing"
+    ],
+    "estimatedTimeWeeks": [
+      6,
+      12
+    ],
+    "dataAvailability": "Public dataset exists",
+    "source": "AI-curated"
+  },
+  {
+    "id": "housing-31-why-is-splitting-pg/flatshare-utility-bills",
+    "title": "Why is splitting PG/flatshare utility bills among students still done over spreadsheets and guesswork?",
+    "category": "Housing",
+    "context": "A recurring friction point in renting and shared-living that's handled informally today.",
+    "buildScore": 49,
+    "difficulty": "Intermediate",
+    "suggestedStack": [
+      "React",
+      "Node.js",
+      "MongoDB",
+      "Tailwind"
+    ],
+    "domainTags": [
+      "marketplace",
+      "fintech",
+      "housing"
+    ],
+    "estimatedTimeWeeks": [
+      6,
+      10
+    ],
+    "dataAvailability": "Needs synthetic data",
+    "source": "AI-curated"
+  },
+  {
+    "id": "career-employment-32-why-do-final-year-students-lack-a",
+    "title": "Why do final-year students lack a structured way to map their skills to realistic job-role gaps?",
+    "category": "Career/Employment",
+    "context": "A structural mismatch between what students have and what recruiters actually filter for.",
+    "buildScore": 51,
+    "difficulty": "Beginner",
+    "suggestedStack": [
+      "Next.js",
+      "OpenAI/Claude API",
+      "PostgreSQL",
+      "Tailwind"
+    ],
+    "domainTags": [
+      "nlp",
+      "career-tech",
+      "matching"
+    ],
+    "estimatedTimeWeeks": [
+      4,
+      8
+    ],
+    "dataAvailability": "Public dataset exists",
+    "source": "AI-curated"
+  },
+  {
+    "id": "career-employment-33-why-is-resume-to-job-description-match-",
+    "title": "Why is resume-to-job-description match scoring inaccessible without paid tools?",
+    "category": "Career/Employment",
+    "context": "A structural mismatch between what students have and what recruiters actually filter for.",
+    "buildScore": 69,
+    "difficulty": "Beginner",
+    "suggestedStack": [
+      "Next.js",
+      "OpenAI/Claude API",
+      "PostgreSQL",
+      "Tailwind"
+    ],
+    "domainTags": [
+      "nlp",
+      "career-tech",
+      "matching"
+    ],
+    "estimatedTimeWeeks": [
+      4,
+      10
+    ],
+    "dataAvailability": "Needs synthetic data",
+    "source": "AI-curated"
+  },
+  {
+    "id": "career-employment-34-why-cant-students-find-verified-recent",
+    "title": "Why can't students find verified, recent placement/interview experiences specific to their college?",
+    "category": "Career/Employment",
+    "context": "A structural mismatch between what students have and what recruiters actually filter for.",
+    "buildScore": 74,
+    "difficulty": "Advanced",
+    "suggestedStack": [
+      "Next.js",
+      "OpenAI/Claude API",
+      "PostgreSQL",
+      "Tailwind"
+    ],
+    "domainTags": [
+      "nlp",
+      "career-tech",
+      "matching"
+    ],
+    "estimatedTimeWeeks": [
+      8,
+      12
+    ],
+    "dataAvailability": "Needs field collection",
+    "source": "AI-curated"
+  },
+  {
+    "id": "transportation-35-why-cant-college-students-get-reliable",
+    "title": "Why can't college students get reliable shared-auto/cab pooling matched by route and timing?",
+    "category": "Transportation",
+    "context": "A coordination and visibility gap in everyday campus and city mobility.",
+    "buildScore": 51,
+    "difficulty": "Beginner",
+    "suggestedStack": [
+      "React Native",
+      "Node.js",
+      "Google Maps API",
+      "Socket.io"
+    ],
+    "domainTags": [
+      "real-time",
+      "maps",
+      "routing"
+    ],
+    "estimatedTimeWeeks": [
+      4,
+      10
+    ],
+    "dataAvailability": "Public dataset exists",
+    "source": "AI-curated"
+  },
+  {
+    "id": "transportation-36-why-is-real-time-campus-shuttle-tracking",
+    "title": "Why is real-time campus shuttle tracking still absent in most Indian universities?",
+    "category": "Transportation",
+    "context": "A coordination and visibility gap in everyday campus and city mobility.",
+    "buildScore": 64,
+    "difficulty": "Intermediate",
+    "suggestedStack": [
+      "React Native",
+      "Node.js",
+      "Google Maps API",
+      "Socket.io"
+    ],
+    "domainTags": [
+      "real-time",
+      "maps",
+      "routing"
+    ],
+    "estimatedTimeWeeks": [
+      6,
+      12
+    ],
+    "dataAvailability": "Needs synthetic data",
+    "source": "AI-curated"
+  },
+  {
+    "id": "food-&-beverage-37-why-cant-hostel-mess-committees-track",
+    "title": "Why can't hostel mess committees track nutritional balance of weekly meal plans?",
+    "category": "Food & Beverage",
+    "context": "An operational blind spot in food service that no one is currently measuring.",
+    "buildScore": 73,
+    "difficulty": "Intermediate",
+    "suggestedStack": [
+      "React",
+      "Node.js",
+      "PostgreSQL",
+      "Chart.js"
+    ],
+    "domainTags": [
+      "data-viz",
+      "health-tech",
+      "ops"
+    ],
+    "estimatedTimeWeeks": [
+      6,
+      10
+    ],
+    "dataAvailability": "Needs synthetic data",
+    "source": "AI-curated"
+  },
+  {
+    "id": "food-&-beverage-38-why-is-food-wastage-tracking-for-college",
+    "title": "Why is food-wastage tracking for college canteens still manual and unmeasured?",
+    "category": "Food & Beverage",
+    "context": "An operational blind spot in food service that no one is currently measuring.",
+    "buildScore": 53,
+    "difficulty": "Advanced",
+    "suggestedStack": [
+      "React",
+      "Node.js",
+      "PostgreSQL",
+      "Chart.js"
+    ],
+    "domainTags": [
+      "data-viz",
+      "health-tech",
+      "ops"
+    ],
+    "estimatedTimeWeeks": [
+      8,
+      14
+    ],
+    "dataAvailability": "Needs field collection",
+    "source": "AI-curated"
+  },
+  {
+    "id": "hardware-iot-39-why-cant-hostel-students-monitor-room",
+    "title": "Why can't hostel students monitor room electricity usage without installing expensive smart meters?",
+    "category": "Hardware/IoT",
+    "context": "A monitoring gap that's expensive to solve with commercial hardware but tractable with DIY sensors.",
+    "buildScore": 95,
+    "difficulty": "Advanced",
+    "suggestedStack": [
+      "Arduino/ESP32",
+      "React",
+      "MQTT",
+      "InfluxDB"
+    ],
+    "domainTags": [
+      "IoT",
+      "sensors",
+      "embedded"
+    ],
+    "estimatedTimeWeeks": [
+      8,
+      14
+    ],
+    "dataAvailability": "Needs synthetic data",
+    "source": "AI-curated"
+  },
+  {
+    "id": "hardware-iot-40-why-is-diy-air-quality-monitoring-for",
+    "title": "Why is DIY air-quality monitoring for classrooms/labs still inaccessible to students?",
+    "category": "Hardware/IoT",
+    "context": "A monitoring gap that's expensive to solve with commercial hardware but tractable with DIY sensors.",
+    "buildScore": 68,
+    "difficulty": "Advanced",
+    "suggestedStack": [
+      "Arduino/ESP32",
+      "React",
+      "MQTT",
+      "InfluxDB"
+    ],
+    "domainTags": [
+      "IoT",
+      "sensors",
+      "embedded"
+    ],
+    "estimatedTimeWeeks": [
+      8,
+      12
+    ],
+    "dataAvailability": "Needs synthetic data",
+    "source": "AI-curated"
+  },
+  {
+    "id": "public-safety-41-why-cant-students-report-unsafe-campus",
+    "title": "Why can't students report unsafe campus infrastructure (broken lights, unsafe walkways) with location-tagged proof?",
+    "category": "Public Safety",
+    "context": "A reporting and verification gap that leaves real safety issues undocumented.",
+    "buildScore": 73,
+    "difficulty": "Intermediate",
+    "suggestedStack": [
+      "React Native",
+      "Node.js",
+      "PostgreSQL",
+      "Google Maps API"
+    ],
+    "domainTags": [
+      "civic-tech",
+      "safety",
+      "maps"
+    ],
+    "estimatedTimeWeeks": [
+      6,
+      10
+    ],
+    "dataAvailability": "Needs field collection",
+    "source": "AI-curated"
+  },
+  {
+    "id": "public-safety-42-why-is-verified-safety-rating-data-for",
+    "title": "Why is verified safety-rating data for PG accommodations near colleges unavailable?",
+    "category": "Public Safety",
+    "context": "A reporting and verification gap that leaves real safety issues undocumented.",
+    "buildScore": 84,
+    "difficulty": "Beginner",
+    "suggestedStack": [
+      "React Native",
+      "Node.js",
+      "PostgreSQL",
+      "Google Maps API"
+    ],
+    "domainTags": [
+      "civic-tech",
+      "safety",
+      "maps"
+    ],
+    "estimatedTimeWeeks": [
+      4,
+      10
+    ],
+    "dataAvailability": "Needs synthetic data",
+    "source": "AI-curated"
+  },
+  {
+    "id": "consumer-services-43-why-cant-small-d2c-sellers-on",
+    "title": "Why can't small D2C sellers on Instagram track order-to-delivery status without a paid SaaS tool?",
+    "category": "Consumer Services",
+    "context": "A verification and trust gap between consumers and local service providers.",
+    "buildScore": 91,
+    "difficulty": "Intermediate",
+    "suggestedStack": [
+      "Next.js",
+      "Supabase",
+      "Stripe",
+      "Tailwind"
+    ],
+    "domainTags": [
+      "marketplace",
+      "trust-safety",
+      "reviews"
+    ],
+    "estimatedTimeWeeks": [
+      6,
+      10
+    ],
+    "dataAvailability": "Needs field collection",
+    "source": "AI-curated"
+  },
+  {
+    "id": "environment-44-why-is-comparing-real-electricity-bill-saving",
+    "title": "Why is comparing real electricity-bill savings from rooftop solar still guesswork for homeowners?",
+    "category": "Environment",
+    "context": "A measurement gap that keeps well-intentioned action from turning into verified impact.",
+    "buildScore": 86,
+    "difficulty": "Advanced",
+    "suggestedStack": [
+      "React",
+      "Python",
+      "Chart.js",
+      "PostgreSQL"
+    ],
+    "domainTags": [
+      "sensors",
+      "sustainability",
+      "data-viz"
+    ],
+    "estimatedTimeWeeks": [
+      8,
+      14
+    ],
+    "dataAvailability": "Needs field collection",
+    "source": "AI-curated"
+  },
+  {
+    "id": "healthcare-45-why-cant-blood-donors-and-requesters",
+    "title": "Why can't blood donors and requesters in a city match in real time during emergencies?",
+    "category": "Healthcare",
+    "context": "A real gap in preventive and everyday care, especially for people without easy access to specialists.",
+    "buildScore": 65,
+    "difficulty": "Advanced",
+    "suggestedStack": [
+      "React Native",
+      "TensorFlow Lite",
+      "FastAPI",
+      "PostgreSQL"
+    ],
+    "domainTags": [
+      "computer-vision",
+      "health-tech",
+      "mobile"
+    ],
+    "estimatedTimeWeeks": [
+      8,
+      14
+    ],
+    "dataAvailability": "Needs field collection",
+    "source": "AI-curated"
+  },
+  {
+    "id": "edtech-46-why-is-tracking-library-book-availability",
+    "title": "Why is tracking library book availability across multiple college libraries still manual?",
+    "category": "EdTech",
+    "context": "A daily friction point for students that most edtech products still treat as an afterthought.",
+    "buildScore": 84,
+    "difficulty": "Beginner",
+    "suggestedStack": [
+      "Next.js",
+      "Whisper API",
+      "Supabase",
+      "Tailwind"
+    ],
+    "domainTags": [
+      "nlp",
+      "speech",
+      "education"
+    ],
+    "estimatedTimeWeeks": [
+      4,
+      10
+    ],
+    "dataAvailability": "Needs synthetic data",
+    "source": "AI-curated"
+  },
+  {
+    "id": "accessibility-47-why-cant-visually-impaired-users-get-an",
+    "title": "Why can't visually-impaired users get an audio-first UPI payment confirmation flow?",
+    "category": "Accessibility",
+    "context": "An everyday barrier that assistive tooling still leaves unsolved for a specific group of users.",
+    "buildScore": 94,
+    "difficulty": "Intermediate",
+    "suggestedStack": [
+      "React Native",
+      "Web Speech API",
+      "Firebase",
+      "TypeScript"
+    ],
+    "domainTags": [
+      "accessibility",
+      "speech",
+      "nlp"
+    ],
+    "estimatedTimeWeeks": [
+      6,
+      12
+    ],
+    "dataAvailability": "Needs synthetic data",
+    "source": "AI-curated"
+  },
+  {
+    "id": "edtech-48-why-is-scheduling-shared-lab-equipment",
+    "title": "Why is scheduling shared lab equipment across student research groups still done via a physical logbook?",
+    "category": "EdTech",
+    "context": "A daily friction point for students that most edtech products still treat as an afterthought.",
+    "buildScore": 60,
+    "difficulty": "Beginner",
+    "suggestedStack": [
+      "Next.js",
+      "Whisper API",
+      "Supabase",
+      "Tailwind"
+    ],
+    "domainTags": [
+      "nlp",
+      "speech",
+      "education"
+    ],
+    "estimatedTimeWeeks": [
+      4,
+      10
+    ],
+    "dataAvailability": "Public dataset exists",
+    "source": "AI-curated"
+  },
+  {
+    "id": "healthcare-49-why-cant-parents-of-young-children",
+    "title": "Why can't parents of young children get a simple, ad-free tool to track developmental milestones?",
+    "category": "Healthcare",
+    "context": "A real gap in preventive and everyday care, especially for people without easy access to specialists.",
+    "buildScore": 66,
+    "difficulty": "Beginner",
+    "suggestedStack": [
+      "React Native",
+      "TensorFlow Lite",
+      "FastAPI",
+      "PostgreSQL"
+    ],
+    "domainTags": [
+      "computer-vision",
+      "health-tech",
+      "mobile"
+    ],
+    "estimatedTimeWeeks": [
+      4,
+      10
+    ],
+    "dataAvailability": "Needs synthetic data",
+    "source": "AI-curated"
+  },
+  {
+    "id": "consumer-services-50-why-is-verifying-the-authenticity-of",
+    "title": "Why is verifying the authenticity of a secondhand electronics listing (phone/laptop) still guesswork?",
+    "category": "Consumer Services",
+    "context": "A verification and trust gap between consumers and local service providers.",
+    "buildScore": 91,
+    "difficulty": "Intermediate",
+    "suggestedStack": [
+      "Next.js",
+      "Supabase",
+      "Stripe",
+      "Tailwind"
+    ],
+    "domainTags": [
+      "marketplace",
+      "trust-safety",
+      "reviews"
+    ],
+    "estimatedTimeWeeks": [
+      6,
+      12
+    ],
+    "dataAvailability": "Public dataset exists",
+    "source": "AI-curated"
+  },
+  {
+    "id": "logistics-51-why-cant-gig-delivery-workers-get",
+    "title": "Why can't gig delivery workers get a route-optimized multi-order planner offline?",
+    "category": "Logistics",
+    "context": "A coordination problem that large aggregators solve for themselves but never for small players.",
+    "buildScore": 57,
+    "difficulty": "Beginner",
+    "suggestedStack": [
+      "React Native",
+      "Node.js",
+      "Google Maps API",
+      "Redis"
+    ],
+    "domainTags": [
+      "routing",
+      "real-time",
+      "maps"
+    ],
+    "estimatedTimeWeeks": [
+      4,
+      8
+    ],
+    "dataAvailability": "Needs synthetic data",
+    "source": "AI-curated"
+  },
+  {
+    "id": "edtech-52-why-is-finding-a-verified-budget",
+    "title": "Why is finding a verified, budget tutor for board-exam subjects still word-of-mouth only?",
+    "category": "EdTech",
+    "context": "A daily friction point for students that most edtech products still treat as an afterthought.",
+    "buildScore": 90,
+    "difficulty": "Beginner",
+    "suggestedStack": [
+      "Next.js",
+      "Whisper API",
+      "Supabase",
+      "Tailwind"
+    ],
+    "domainTags": [
+      "nlp",
+      "speech",
+      "education"
+    ],
+    "estimatedTimeWeeks": [
+      4,
+      10
+    ],
+    "dataAvailability": "Needs synthetic data",
+    "source": "AI-curated"
+  },
+  {
+    "id": "consumer-services-53-why-cant-small-event-organizers-get",
+    "title": "Why can't small event organizers get simple check-in/ticketing without expensive SaaS?",
+    "category": "Consumer Services",
+    "context": "A verification and trust gap between consumers and local service providers.",
+    "buildScore": 94,
+    "difficulty": "Intermediate",
+    "suggestedStack": [
+      "Next.js",
+      "Supabase",
+      "Stripe",
+      "Tailwind"
+    ],
+    "domainTags": [
+      "marketplace",
+      "trust-safety",
+      "reviews"
+    ],
+    "estimatedTimeWeeks": [
+      6,
+      10
+    ],
+    "dataAvailability": "Public dataset exists",
+    "source": "AI-curated"
+  },
+  {
+    "id": "healthcare-54-why-is-tracking-personal-water-intake",
+    "title": "Why is tracking personal water intake + hydration meaningfully different for outdoor laborers vs office workers unaddressed?",
+    "category": "Healthcare",
+    "context": "A real gap in preventive and everyday care, especially for people without easy access to specialists.",
+    "buildScore": 72,
+    "difficulty": "Beginner",
+    "suggestedStack": [
+      "React Native",
+      "TensorFlow Lite",
+      "FastAPI",
+      "PostgreSQL"
+    ],
+    "domainTags": [
+      "computer-vision",
+      "health-tech",
+      "mobile"
+    ],
+    "estimatedTimeWeeks": [
+      4,
+      8
+    ],
+    "dataAvailability": "Needs field collection",
+    "source": "AI-curated"
+  },
+  {
+    "id": "edtech-55-why-cant-students-get-a-structured",
+    "title": "Why can't students get a structured way to prep specifically for GATE/CAT-style problems with adaptive difficulty?",
+    "category": "EdTech",
+    "context": "A daily friction point for students that most edtech products still treat as an afterthought.",
+    "buildScore": 74,
+    "difficulty": "Advanced",
+    "suggestedStack": [
+      "Next.js",
+      "Whisper API",
+      "Supabase",
+      "Tailwind"
+    ],
+    "domainTags": [
+      "nlp",
+      "speech",
+      "education"
+    ],
+    "estimatedTimeWeeks": [
+      8,
+      14
+    ],
+    "dataAvailability": "Needs synthetic data",
+    "source": "AI-curated"
+  },
+  {
+    "id": "other-56-why-is-discovering-verified-ngos/volunteering-oppor",
+    "title": "Why is discovering verified NGOs/volunteering opportunities near a student's college still scattered?",
+    "category": "Other",
+    "context": "A coordination problem that's currently solved informally, if at all.",
+    "buildScore": 89,
+    "difficulty": "Advanced",
+    "suggestedStack": [
+      "Next.js",
+      "Node.js",
+      "PostgreSQL",
+      "Tailwind"
+    ],
+    "domainTags": [
+      "community",
+      "matching",
+      "web"
+    ],
+    "estimatedTimeWeeks": [
+      8,
+      14
+    ],
+    "dataAvailability": "Needs synthetic data",
+    "source": "AI-curated"
+  },
+  {
+    "id": "public-safety-57-why-cant-apartment-security-guards-log",
+    "title": "Why can't apartment security guards log visitor entries digitally without expensive gated-community software?",
+    "category": "Public Safety",
+    "context": "A reporting and verification gap that leaves real safety issues undocumented.",
+    "buildScore": 93,
+    "difficulty": "Beginner",
+    "suggestedStack": [
+      "React Native",
+      "Node.js",
+      "PostgreSQL",
+      "Google Maps API"
+    ],
+    "domainTags": [
+      "civic-tech",
+      "safety",
+      "maps"
+    ],
+    "estimatedTimeWeeks": [
+      4,
+      10
+    ],
+    "dataAvailability": "Needs field collection",
+    "source": "AI-curated"
+  },
+  {
+    "id": "other-58-why-is-tracking-a-lost-item",
+    "title": "Why is tracking a lost item (ID card, wallet) across a large campus still informal WhatsApp posts?",
+    "category": "Other",
+    "context": "A coordination problem that's currently solved informally, if at all.",
+    "buildScore": 45,
+    "difficulty": "Beginner",
+    "suggestedStack": [
+      "Next.js",
+      "Node.js",
+      "PostgreSQL",
+      "Tailwind"
+    ],
+    "domainTags": [
+      "community",
+      "matching",
+      "web"
+    ],
+    "estimatedTimeWeeks": [
+      4,
+      8
+    ],
+    "dataAvailability": "Needs field collection",
+    "source": "AI-curated"
+  },
+  {
+    "id": "agriculture-59-why-cant-small-farmers-access-group-buying",
+    "title": "Why can't small farmers access group-buying for seeds/fertilizer to get bulk pricing?",
+    "category": "Agriculture",
+    "context": "A recurring pain point for smallholder farmers who can't afford enterprise agri-tech tooling.",
+    "buildScore": 65,
+    "difficulty": "Advanced",
+    "suggestedStack": [
+      "Flutter",
+      "TensorFlow Lite",
+      "Firebase",
+      "Node.js"
+    ],
+    "domainTags": [
+      "computer-vision",
+      "IoT",
+      "agri-tech"
+    ],
+    "estimatedTimeWeeks": [
+      8,
+      12
+    ],
+    "dataAvailability": "Needs field collection",
+    "source": "AI-curated"
+  },
+  {
+    "id": "environment-60-why-is-verifying-whether-a-sustainable",
+    "title": "Why is verifying whether a \"sustainable\" product claim is genuine still opaque to average consumers?",
+    "category": "Environment",
+    "context": "A measurement gap that keeps well-intentioned action from turning into verified impact.",
+    "buildScore": 60,
+    "difficulty": "Beginner",
+    "suggestedStack": [
+      "React",
+      "Python",
+      "Chart.js",
+      "PostgreSQL"
+    ],
+    "domainTags": [
+      "sensors",
+      "sustainability",
+      "data-viz"
+    ],
+    "estimatedTimeWeeks": [
+      4,
+      8
+    ],
+    "dataAvailability": "Public dataset exists",
+    "source": "AI-curated"
+  }
+]

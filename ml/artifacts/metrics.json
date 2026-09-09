@@ -1,0 +1,20 @@
+{
+  "n_samples": 60,
+  "n_train": 48,
+  "n_test": 12,
+  "model_comparison_cv_r2": {
+    "baseline_mean": -0.398919818250724,
+    "ridge": -0.38399628664416896,
+    "random_forest": -0.45843179216452945,
+    "gradient_boosting": -0.5029404648142076
+  },
+  "selected_model": "ridge",
+  "best_params": {
+    "model__alpha": 100.0
+  },
+  "cv_r2_mean": -0.38399628664416896,
+  "test_mae": 10.581038781496284,
+  "test_rmse": 13.488954053751732,
+  "test_r2": 0.03654822831960147,
+  "note": "n=60 is a small dataset for regression; cv_r2_mean (5-fold, averaged) is the more trustworthy generalization estimate here than test_r2 from a single 12-row held-out split. Compare selected model's cv_r2_mean against model_comparison_cv_r2.baseline_mean to see whether it beats predicting the average Build Score outright."
+}
